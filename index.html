@@ -4,1578 +4,1673 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math Prep 3 • Exponential Equations | Mr Ahmed Abd El-Motaal</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#F0F7FF',
-              100: '#E0EFFF',
-              200: '#BAE0FD',
-              300: '#7CC5FB',
-              400: '#38A5F8',
-              500: '#1D63ED',
-              600: '#1550CA',
-              700: '#133FA2',
-              800: '#153784',
-              900: '#17306B'
-            },
-            pastel: {
-              blue: '#EEF5FB',
-              lavender: '#F4F0FF',
-              mint: '#E8FAF2',
-              amber: '#FEF6E9',
-              coral: '#FFF0F0',
-              cloud: '#F8FAFD'
-            }
-          },
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
-            display: ['"Outfit"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace']
-          },
-          boxShadow: {
-            'soft-cloud': '0 16px 40px -12px rgba(29, 99, 237, 0.08), 0 4px 16px -2px rgba(15, 23, 42, 0.03)',
-            'float-card': '0 24px 48px -12px rgba(29, 99, 237, 0.12), 0 8px 24px -4px rgba(0, 0, 0, 0.04)',
-            'clay-btn': '0 5px 0 #1550CA, 0 12px 20px rgba(29, 99, 237, 0.28)',
-            'clay-mint': '0 5px 0 #059669, 0 12px 20px rgba(16, 185, 129, 0.25)',
-            'clay-card': '0 10px 30px -5px rgba(29, 99, 237, 0.07), inset 0 2px 0 rgba(255, 255, 255, 0.9)'
-          }
-        }
-      }
-    };
-  </script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Outfit, Plus Jakarta Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Phosphor Icons CDN -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-  <!-- Three.js for 3D Floating Polyhedra -->
+  <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <!-- Canvas Confetti -->
+  <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- MathJax Configuration & Loader -->
+  <!-- MathJax 3 Configuration -->
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
       },
-      chtml: {
-        scale: 1.15
-      },
-      svg: {
-        scale: 1.15
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
       }
     };
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  <!-- Tailwind Custom Utility Styles -->
   <style>
-    /* Custom ruled student notebook paper */
-    .ruled-notebook {
-      background-color: #fdfcf9;
-      background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
-      background-size: 100% 2.35rem;
-      line-height: 2.35rem;
-      border-left: 4px double #f87171;
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f4f8fc;
+      color: #0f172a;
+      overflow-x: hidden;
     }
-
-    @keyframes float3D {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-14px) rotate(2deg); }
+    h1, h2, h3, h4, .font-outfit {
+      font-family: 'Outfit', sans-serif;
     }
-    .animate-float-3d {
-      animation: float3D 6s ease-in-out infinite;
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
     }
-
-    @keyframes floatDelayed {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-18px) rotate(-2deg); }
+    .shadow-soft-cloud {
+      box-shadow: 0 16px 40px -10px rgba(13, 38, 94, 0.08), 0 4px 16px -2px rgba(13, 38, 94, 0.03);
     }
-    .animate-float-delayed {
-      animation: floatDelayed 8s ease-in-out 2s infinite;
+    .shadow-clay-btn {
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.35);
     }
-
-    .glass-bar {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+    #threeCanvasBg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
     }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    /* Ensure MathJax formulas and examples never overflow parent frames */
+    mjx-container, .MathJax, .mjx-chtml {
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      vertical-align: middle !important;
     }
-    ::-webkit-scrollbar-track {
-      background: #EEF5FB;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94A3B8;
+    .math-frame {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
     }
   </style>
 </head>
 
-<body class="bg-[#EEF5FB] text-slate-800 font-sans antialiased min-h-screen relative overflow-x-hidden selection:bg-blue-100 selection:text-blue-700">
+<body class="relative min-h-screen flex flex-col antialiased">
 
-  <!-- 3D Interactive WebGL Floating Polyhedra Canvas -->
-  <canvas id="three-bg-canvas" class="fixed inset-0 pointer-events-none -z-10 opacity-70"></canvas>
+  <!-- Three.js Background Canvas -->
+  <canvas id="threeCanvasBg"></canvas>
 
-  <!-- Ambient Floating Gradient Orbs -->
-  <div class="fixed top-12 left-10 -z-20 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl pointer-events-none animate-float-3d"></div>
-  <div class="fixed top-1/2 right-12 -z-20 w-96 h-96 bg-indigo-100/40 rounded-full blur-3xl pointer-events-none animate-float-delayed"></div>
-  <div class="fixed bottom-10 left-1/3 -z-20 w-80 h-80 bg-teal-100/30 rounded-full blur-3xl pointer-events-none"></div>
-
-  <!-- TOP MICRO-NAVBAR -->
-  <div class="w-full bg-white/85 border-b border-slate-200/70 py-2 px-4 sm:px-8 relative z-50">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+  <!-- ========================================================================= -->
+  <!-- 1. TOP MICRO-NAVBAR (Matching IMG_1842.jpg & IMG_1860.jpg) -->
+  <!-- ========================================================================= -->
+  <header class="relative z-30 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
       
-      <!-- Left: Unit Pill & Subject Title -->
-      <div class="flex items-center gap-2.5">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D63ED] text-white font-bold text-xs shadow-xs tracking-tight">
-          <i class="ph-fill ph-cloud text-xs"></i>
-          <span>Math Prep 3 • Algebra Unit 1</span>
+      <!-- Grade & Lesson Capsule -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600 text-white font-bold text-[11px] tracking-wide shadow-sm">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2L1 21h22L12 2zm0 3.8l7.5 13.2H4.5L12 5.8zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+          </svg>
+          Math Prep 3 • Algebra Unit 1
         </span>
-        <span class="font-bold text-slate-800 text-xs sm:text-sm">
+        <span class="text-slate-700 font-semibold hidden md:inline">
           Lesson 2: Exponential Equations
         </span>
       </div>
 
-      <!-- Right: Phone & YouTube Capsule Actions -->
-      <div class="flex items-center gap-2">
-        <a href="tel:01019775590" title="Call Mr Ahmed Abd El-Motaal" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 text-xs font-semibold transition shadow-2xs">
-          <i class="ph-fill ph-phone text-emerald-600 text-xs"></i>
-          <span class="font-mono font-bold">01019775590</span>
+      <!-- Contact Pill & YouTube Button -->
+      <div class="flex items-center gap-2 sm:gap-3 font-semibold">
+        <a href="tel:01019775590" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-all">
+          <svg class="w-3.5 h-3.5 fill-current text-emerald-600" viewBox="0 0 24 24">
+            <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/>
+          </svg>
+          01019775590
         </a>
-        <a href="https://youtu.be/VECZeDzBTIM" target="_blank" rel="noopener noreferrer" title="Watch Lesson on YouTube" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white hover:bg-red-50 text-slate-700 hover:text-red-600 border border-slate-200 text-xs font-semibold transition shadow-2xs">
-          <i class="ph-fill ph-youtube-logo text-red-600 text-sm"></i>
-          <span class="font-display font-bold">mr Motaal</span>
+        <a href="https://youtu.be/VECZeDzBTIM" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 transition-all">
+          <svg class="w-3.5 h-3.5 fill-current text-rose-600" viewBox="0 0 24 24">
+            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+          </svg>
+          mr Motaal
         </a>
       </div>
-
     </div>
-  </div>
+  </header>
 
-  <!-- MAIN HEADER & TAB CONTROLLER -->
-  <header class="sticky top-0 z-40 glass-bar border-b border-slate-200/60 shadow-xs transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <!-- ========================================================================= -->
+  <!-- 2. BRANDING & SEGMENTED TABS (Exact Layout of IMG_1842 & IMG_1860) -->
+  <!-- ========================================================================= -->
+  <nav class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       
-      <!-- Brand & Teacher Identity -->
+      <!-- Brand & Teacher Info -->
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1D63ED] to-[#38A5F8] text-white flex items-center justify-center shadow-lg shadow-blue-500/25 ring-2 ring-white shrink-0 transform hover:scale-105 transition-transform duration-200">
-          <i class="ph-bold ph-function text-2xl"></i>
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-serif font-black text-2xl shadow-clay-btn">
+          <i>f</i>
         </div>
         <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-lg sm:text-xl font-display font-black text-slate-900 leading-tight">
+          <div class="flex items-center gap-2">
+            <h1 class="font-outfit font-extrabold text-slate-900 text-lg sm:text-xl tracking-tight leading-none">
               Mr Ahmed Abd El-Motaal
             </h1>
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1D63ED] border border-blue-200 text-[11px] font-bold">
-              <i class="ph-bold ph-check-circle text-xs"></i>
-              <span>Master Educator</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold tracking-wide">
+              <svg class="w-3 h-3 text-blue-600 fill-current" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              Master Educator
             </span>
           </div>
-          <p class="text-xs text-slate-500 font-medium">
-            Exponential Equations • Visual Theory, Master Toolkit & Smart Bank
+          <p class="text-xs text-slate-500 font-medium mt-0.5">
+            Similarity &bull; Exponential Equations &bull; Visual & Interactive Platform
           </p>
         </div>
       </div>
 
-      <!-- Segmented Pill Tab Switcher -->
-      <div class="bg-[#EBF1F8] p-1.5 rounded-full flex items-center gap-1 border border-blue-100 shadow-inner max-w-full overflow-x-auto">
-        <button onclick="switchTab('tab-concepts')" id="btn-tab-concepts" class="tab-btn active-tab flex items-center gap-2 px-5 py-2 rounded-full font-display font-bold text-xs sm:text-sm transition-all duration-200 bg-white text-blue-700 shadow-sm">
-          <i class="ph-bold ph-book-open-text text-sm"></i>
-          <span>1. Concept, Summary & Hacks</span>
+      <!-- Segmented Capsule Tab Bar -->
+      <div class="inline-flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 self-start md:self-auto text-xs font-bold text-slate-600">
+        <button id="tabBtn1" onclick="switchMainTab(1)" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 bg-white text-blue-700 shadow-sm font-extrabold">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+          </svg>
+          <span>1. Concept & Hacks</span>
         </button>
 
-        <button onclick="switchTab('tab-revision')" id="btn-tab-revision" class="tab-btn flex items-center gap-2 px-5 py-2 rounded-full font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-blue-700 transition-all duration-200">
-          <i class="ph-bold ph-play-circle text-sm text-red-600"></i>
-          <span>2. Video Practice (13 Questions)</span>
+        <button id="tabBtn2" onclick="switchMainTab(2)" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 hover:text-slate-900">
+          <svg class="w-4 h-4 fill-current text-rose-500" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+          <span>2. Video Practice (13 Qs)</span>
         </button>
 
-        <button onclick="switchTab('tab-quiz')" id="btn-tab-quiz" class="tab-btn flex items-center gap-2 px-5 py-2 rounded-full font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-blue-700 transition-all duration-200">
-          <i class="ph-bold ph-medal text-sm"></i>
-          <span>3. Quiz (3 Graded Models)</span>
+        <button id="tabBtn3" onclick="switchMainTab(3)" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 hover:text-slate-900">
+          <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 15l-4.5-4.5 1.41-1.41L12 15.17l6.09-6.09 1.41 1.41L12 18z"/>
+          </svg>
+          <span>3. Quiz (10 Marks)</span>
         </button>
       </div>
 
     </div>
-  </header>
+  </nav>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- MAIN WORKSPACE -->
+  <main class="relative z-10 flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-8">
 
-    <!-- ========================================================================================= -->
-    <!-- SECTION 1: MASTER SUMMARY, CORE THEOREMS & TIPS & TRICKS TOOLKIT -->
-    <!-- ========================================================================================= -->
-    <div id="tab-concepts" class="tab-content block space-y-10">
+    <!-- ========================================================================= -->
+    <!-- TAB 1: CONCEPT, VISUAL THEORY & EXAM HACKS -->
+    <!-- ========================================================================= -->
+    <section id="tabContent1" class="space-y-8">
       
-      <!-- Hero Card: Core Definition & Visual Rule Engine -->
-      <section class="bg-white rounded-[2.5rem] p-6 sm:p-10 border border-slate-200/80 shadow-soft-cloud relative overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          <div class="lg:col-span-7 space-y-5">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/60 text-[#1D63ED] text-xs font-bold">
-              <i class="ph-bold ph-graduation-cap text-sm"></i>
-              <span>Comprehensive Revision Blueprint • Math Prep 3</span>
-            </div>
-
-            <h2 class="text-2xl sm:text-4xl font-display font-black text-slate-900 tracking-tight leading-tight">
-              Mastering Exponential Equations & Exponent Rules
-            </h2>
-
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
-              An <strong>Exponential Equation</strong> is an equation where the unknown variable sits in the <em>exponent (power)</em>, rather than in the base. Solving these equations is governed by 3 fundamental mathematical laws and systematic prime base reduction.
-            </p>
-
-            <!-- Warm-up Callout -->
-            <div class="p-5 rounded-3xl bg-[#F8FAFD] border border-blue-100 text-xs sm:text-sm text-slate-700 space-y-2">
-              <p class="font-bold text-slate-900 flex items-center gap-1.5">
-                <i class="ph-bold ph-target text-blue-600"></i>
-                <span>Essential Definition Contrast:</span>
-              </p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div class="p-3 bg-white rounded-2xl border border-slate-200 font-mono text-xs">
-                  <span class="text-slate-400 block text-[10px] uppercase font-sans font-bold">Polynomial Equation</span>
-                  $x^2 = 16 \implies x = \pm 4$<br>
-                  <span class="text-slate-500 font-sans text-[11px]">(Variable is in base)</span>
-                </div>
-                <div class="p-3 bg-blue-50/60 rounded-2xl border border-blue-200 font-mono text-xs text-blue-900">
-                  <span class="text-blue-500 block text-[10px] uppercase font-sans font-bold">Exponential Equation</span>
-                  $2^x = 16 \implies 2^x = 2^4 \implies x = 4$<br>
-                  <span class="text-blue-700 font-sans text-[11px]">(Variable is in exponent)</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Action Button & Inline Formula Pill -->
-            <div class="flex flex-wrap items-center gap-3 pt-1">
-              <button onclick="toggleWarmupCalculation()" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#1D63ED] hover:bg-blue-700 text-white font-display font-bold text-sm shadow-clay-btn active:translate-y-1 active:shadow-xs transition duration-150">
-                <i class="ph-bold ph-lightbulb text-base"></i>
-                <span id="warmup-btn-text">Reveal The 3 Golden Rules</span>
-              </button>
-
-              <div class="px-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-xs font-mono font-bold text-slate-700 shadow-2xs">
-                $$a^x = a^y \implies x = y \quad (a \notin \{-1, 0, 1\})$$
-              </div>
-            </div>
-
-            <!-- Hidden Warmup Box -->
-            <div id="warmup-calculation-box" class="hidden p-5 rounded-3xl bg-blue-50/70 border border-blue-200 text-slate-800 text-xs sm:text-sm space-y-3">
-              <p class="font-bold text-blue-900 flex items-center gap-1.5">
-                <i class="ph-bold ph-check-circle text-blue-600 text-base"></i>
-                <span>The Three Core Principles (From Lecture):</span>
-              </p>
-              <div class="space-y-2 text-slate-700 font-sans">
-                <div class="p-2.5 bg-white rounded-xl border border-blue-100 flex items-start gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-blue-500 text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">1</span>
-                  <div>
-                    <span class="font-bold text-slate-900">Equal Bases:</span> When $a^x = a^y$ and $a \notin \{-1, 0, 1\}$, powers equate: $x = y$.
-                  </div>
-                </div>
-                <div class="p-2.5 bg-white rounded-xl border border-blue-100 flex items-start gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">2</span>
-                  <div>
-                    <span class="font-bold text-slate-900">Unit RHS ($= 1$):</span> When $a^P = 1$ ($a \ne 0$), the exponent must be zero: $P = 0$ (since $a^0 = 1$).
-                  </div>
-                </div>
-                <div class="p-2.5 bg-white rounded-xl border border-blue-100 flex items-start gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">3</span>
-                  <div>
-                    <span class="font-bold text-slate-900">Different Bases with Equal Exponent:</span> When $a^P = b^P$ where $a \ne b$ (e.g. $2^{x+1} = 5^{x+1}$), the exponent must be zero: $P = 0$.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Visual Graphic Card -->
-          <div class="lg:col-span-5 relative">
-            <div class="w-full bg-[#F4F8FC] border border-blue-100 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-inner text-center space-y-6">
-              <div class="absolute -top-1 -right-1 w-16 h-16 bg-[#38A5F8] text-white rounded-bl-3xl flex items-center justify-center font-black shadow-md">
-                <i class="ph-bold ph-lightning text-2xl"></i>
-              </div>
-
-              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs text-xs font-bold text-slate-700">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Base Equivalence Engine</span>
-              </div>
-
-              <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3">
-                <div class="flex items-center justify-center gap-3 text-xs sm:text-sm font-bold flex-wrap">
-                  <span class="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 font-mono">
-                    $a^x = b$
-                  </span>
-                  <i class="ph-bold ph-arrows-left-right text-slate-400"></i>
-                  <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 font-mono">
-                    $a^x = a^k \implies x = k$
-                  </span>
-                </div>
-                <div class="pt-2 font-mono text-xs sm:text-sm text-slate-800">
-                  $$2^{x-7} = \frac{1}{32} = 2^{-5} \implies x - 7 = -5 \implies x = 2$$
-                </div>
-              </div>
-
-              <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-2xl text-[11px] font-semibold text-amber-900 text-left">
-                <span class="font-bold flex items-center gap-1 text-amber-800">
-                  <i class="ph-bold ph-sparkle"></i> Pro Tip:
-                </span>
-                Always memorize the prime powers: $2^1$ to $2^7$, $3^1$ to $3^5$, and $5^1$ to $5^4$.
-              </div>
-            </div>
-          </div>
-
+      <!-- Intro Hero Banner -->
+      <div class="bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/30 rounded-[2.5rem] p-6 sm:p-10 border border-slate-200/90 shadow-soft-cloud">
+        <div class="max-w-3xl space-y-3">
+          <span class="px-3.5 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wider">
+            Curriculum Visual Summary
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-outfit font-black text-slate-900 tracking-tight">
+            The Fundamental Laws of Exponential Equations
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+            In standard polynomial equations, the variable is in the base (e.g., $x^2 = 9$). In <strong class="text-blue-700">Exponential Equations</strong>, the unknown variable is in the power (e.g., $3^x = 81$). Here are the golden rules taught by <strong class="text-slate-800">Mr Ahmed Abd El-Motaal</strong>.
+          </p>
         </div>
-      </section>
+      </div>
 
-      <!-- ========================================================================= -->
-      <!-- TIPS & TRICKS / EXAM HACKS TOOLKIT (STUDENT REVISION CHEAT-SHEET) -->
-      <!-- ========================================================================= -->
-      <section class="bg-white rounded-[2.5rem] p-6 sm:p-10 border border-slate-200/90 shadow-soft-cloud space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-          <div class="flex items-center gap-3">
-            <span class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-display font-black text-xl shadow-md">
-              <i class="ph-bold ph-magic-wand"></i>
+      <!-- 3 Golden Cases of Exponential Equations -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Law 1 -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-soft-cloud space-y-3 flex flex-col justify-between overflow-hidden">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-sm">1</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Base Equality</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Equal Bases $\implies$ Equal Powers</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              If $a^x = a^y$ where $a \notin \{ -1, 0, 1 \}$, then the powers must be equal:
+            </p>
+            <div class="bg-slate-50 p-3 rounded-xl font-mono text-center text-sm font-bold text-blue-800 border border-slate-200 math-frame">
+              $$a^x = a^y \implies x = y$$
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 italic pt-2 border-t border-slate-100 math-frame">
+            <span>Example:</span> $2^{x-7} = 2^{-5} \implies x = 2$
+          </div>
+        </div>
+
+        <!-- Law 2 -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-soft-cloud space-y-3 flex flex-col justify-between overflow-hidden">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-sm flex items-center justify-center shadow-sm">2</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Equal Powers</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Equal Powers $\implies$ Base Equivalence or Power = 0</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              If $a^m = b^m$, then:
+            </p>
+            <div class="bg-slate-50 p-3 rounded-xl font-mono text-xs font-bold text-indigo-900 border border-slate-200 space-y-1 math-frame">
+              <div>$\bullet$ If $m$ is odd $\implies a = b$</div>
+              <div>$\bullet$ If $m$ is even $\implies a = \pm b$</div>
+              <div>$\bullet$ If $a \neq b \implies m = 0$</div>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 italic pt-2 border-t border-slate-100 math-frame">
+            <span>Example:</span> $2^{x+1} = 3^{x+1} \implies x = -1$
+          </div>
+        </div>
+
+        <!-- Law 3 -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-soft-cloud space-y-3 flex flex-col justify-between overflow-hidden">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shadow-sm">3</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">RHS = 1</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Right Hand Side is 1 $\implies$ Power is Zero</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Since any non-zero real number raised to the zero power equals 1 ($a^0 = 1$):
+            </p>
+            <div class="bg-slate-50 p-3 rounded-xl font-mono text-center text-sm font-bold text-emerald-800 border border-slate-200 math-frame">
+              $$a^{f(x)} = 1 \implies f(x) = 0 \quad (a \neq 0)$$
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 italic pt-2 border-t border-slate-100 math-frame">
+            <span>Example:</span> $4^{x^2 - 9} = 1 \implies x = \pm 3$
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Refresh: Laws of Powers (Pure Academic English) -->
+      <div class="bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-white rounded-3xl p-6 sm:p-8 border border-amber-200 shadow-soft-cloud space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold text-base flex items-center justify-center shadow-sm">
+              💡
             </span>
-            <div>
-              <span class="text-xs font-bold text-amber-600 tracking-wider uppercase">Student Cheat Sheet</span>
-              <h3 class="text-xl sm:text-2xl font-display font-black text-slate-900">Tips, Tricks & Exam Hacks</h3>
-            </div>
+            <h3 class="text-lg sm:text-xl font-outfit font-extrabold text-slate-900">
+              Prerequisite Refresh: Fundamental Laws of Powers
+            </h3>
           </div>
-
-          <div class="flex items-center gap-2">
-            <span class="px-3.5 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200">
-              6 Secret Strategies
-            </span>
-          </div>
+          <span class="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full uppercase tracking-wider">
+            Essential Toolkit
+          </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          <!-- Hack 1: Prime Power Conversion Card -->
-          <div class="p-6 rounded-3xl bg-blue-50/40 border border-blue-100 hover:border-blue-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-blue-100 text-blue-700 text-xs font-bold font-mono">Hack #1</span>
-              <i class="ph-bold ph-tree-structure text-blue-600 text-lg"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1 text-xs sm:text-sm">
+          <!-- Rule 1: Product -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">1</span>
+              Product Law
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">The Prime Decomposition Tree</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              When encountering composite numbers, break them down immediately:
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-blue-100 font-mono text-xs text-blue-950 space-y-1">
-              <div>$81 = 3^4 \quad|\quad 27 = 3^3$</div>
-              <div>$32 = 2^5 \quad|\quad 64 = 2^6 \quad|\quad 128 = 2^7$</div>
-              <div>$125 = 5^3 \quad|\quad 625 = 5^4$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$a^m \times a^n = a^{m+n}$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Never leave $9, 16, 27, 81$ unfactored.</p>
+            <p class="text-[11px] text-slate-500">Keep the common base and add the powers together.</p>
           </div>
 
-          <!-- Hack 2: Negative Inversion Flip -->
-          <div class="p-6 rounded-3xl bg-emerald-50/40 border border-emerald-100 hover:border-emerald-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-emerald-100 text-emerald-700 text-xs font-bold font-mono">Hack #2</span>
-              <i class="ph-bold ph-arrows-down-up text-emerald-600 text-lg"></i>
+          <!-- Rule 2: Quotient -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">2</span>
+              Quotient Law
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">Fractional Flipping Shortcut</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              Flipping a fraction negates the entire exponent. If bases are reciprocal fractions, flip one side and change all signs:
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-emerald-100 font-mono text-xs text-emerald-950 space-y-1">
-              <div>$\frac{1}{a^n} = a^{-n}$</div>
-              <div>$\left(\frac{2}{3}\right)^P = \left(\frac{3}{2}\right)^{-P}$</div>
-              <div>$\left(\frac{4}{9}\right) = \left(\frac{2}{3}\right)^2 \implies \left(\frac{4}{9}\right)^x = \left(\frac{3}{2}\right)^{-2x}$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$\frac{a^m}{a^n} = a^{m-n} \quad (a \neq 0)$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Watch out: flip reverses signs of all terms in exponent.</p>
+            <p class="text-[11px] text-slate-500">Keep the common base and subtract the powers.</p>
           </div>
 
-          <!-- Hack 3: The Gift of Unit RHS -->
-          <div class="p-6 rounded-3xl bg-purple-50/40 border border-purple-100 hover:border-purple-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-purple-100 text-purple-700 text-xs font-bold font-mono">Hack #3</span>
-              <i class="ph-bold ph-gift text-purple-600 text-lg"></i>
+          <!-- Rule 3: Power of a Power -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">3</span>
+              Power of a Power
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">The Right-Hand $= 1$ "Gift"</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              Mr Ahmed calls this "The Gift" in the video. Whenever the right-hand side is $1$, you do not need to factor anything!
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-purple-100 font-mono text-xs text-purple-950 space-y-1">
-              <div>$a^{f(x)} = 1 \implies f(x) = 0$</div>
-              <div>$3^{x^2 - 9} = 1 \implies x^2 - 9 = 0 \implies x = \pm 3$</div>
-              <div>$7^{2x - 6} = 1 \implies 2x - 6 = 0 \implies x = 3$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$(a^m)^n = a^{m \cdot n}$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Trap alert: $x^2 = 9$ gives $\pm 3$, do not forget the negative value!</p>
+            <p class="text-[11px] text-slate-500">Multiply the inner and outer powers directly.</p>
           </div>
 
-          <!-- Hack 4: Common Factor Extraction -->
-          <div class="p-6 rounded-3xl bg-amber-50/40 border border-amber-100 hover:border-amber-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-700 text-xs font-bold font-mono">Hack #4</span>
-              <i class="ph-bold ph-brackets-curly text-amber-600 text-lg"></i>
+          <!-- Rule 4: Negative Power -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">4</span>
+              Negative Power Law
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">Splitting & Common Factoring</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              When terms are added, e.g. $2^x + 2^{x+1}$, you CANNOT add the exponents! Split and factor:
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-amber-100 font-mono text-xs text-amber-950 space-y-1">
-              <div>$2^{x+1} = 2^x \cdot 2^1 \quad|\quad 2^{x+2} = 2^x \cdot 2^2$</div>
-              <div>$2^x(1 + 2 + 4) = 112$</div>
-              <div>$7 \cdot 2^x = 112 \implies 2^x = 16 \implies x = 4$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$a^{-n} = \frac{1}{a^n} \quad (a \neq 0)$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Never write $2^x + 2^{x+1} = 2^{2x+1}$ (huge error!).</p>
+            <p class="text-[11px] text-slate-500">A negative power is the reciprocal of the positive power.</p>
           </div>
 
-          <!-- Hack 5: Quadratic Exponent Factorization -->
-          <div class="p-6 rounded-3xl bg-rose-50/40 border border-rose-100 hover:border-rose-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-rose-100 text-rose-700 text-xs font-bold font-mono">Hack #5</span>
-              <i class="ph-bold ph-calculator text-rose-600 text-lg"></i>
+          <!-- Rule 5: Fraction Inversion -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">5</span>
+              Fraction Inversion Law
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">Quadratic Exponent Rearrangement</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              When powers result in an equation with $x^2$ and $x$, rearrange to $Ax^2 + Bx + C = 0$:
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-rose-100 font-mono text-xs text-rose-950 space-y-1">
-              <div>$2^{x^2} = 16^{3-x} \implies x^2 = 4(3-x)$</div>
-              <div>$x^2 + 4x - 12 = 0$</div>
-              <div>$(x + 6)(x - 2) = 0 \implies x \in \{2, -6\}$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$\left(\frac{a}{b}\right)^{-n} = \left(\frac{b}{a}\right)^n$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Use calculator `MODE 5 3` to verify factors immediately.</p>
+            <p class="text-[11px] text-slate-500">Inverting the fraction changes the sign of the power.</p>
           </div>
 
-          <!-- Hack 6: Substitution Trick -->
-          <div class="p-6 rounded-3xl bg-cyan-50/40 border border-cyan-100 hover:border-cyan-300 transition duration-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 rounded-xl bg-cyan-100 text-cyan-700 text-xs font-bold font-mono">Hack #6</span>
-              <i class="ph-bold ph-swap text-cyan-600 text-lg"></i>
+          <!-- Rule 6: Zero Power & Distribution -->
+          <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-sm space-y-1 overflow-hidden">
+            <div class="font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] flex items-center justify-center">6</span>
+              Zero Power & Distribution
             </div>
-            <h4 class="font-display font-bold text-slate-900 text-base">Chain Exponential Substitution</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              When given two equations with different powers (e.g. $2^a = 27$ and $2^b = 3$):
-            </p>
-            <div class="p-3 bg-white rounded-2xl border border-cyan-100 font-mono text-xs text-cyan-950 space-y-1">
-              <div>$27 = 3^3 = (2^b)^3 = 2^{3b}$</div>
-              <div>Since $2^a = 2^{3b} \implies a = 3b$</div>
-              <div>Then $\frac{a+b}{b} = \frac{3b+b}{b} = \frac{4b}{b} = 4$</div>
+            <div class="font-mono text-center py-1 font-bold text-slate-800 bg-amber-50/50 rounded-lg math-frame">
+              $$a^0 = 1 \quad \text{and} \quad (ab)^n = a^n b^n$$
             </div>
-            <p class="text-[11px] text-slate-500 italic">Express the larger composite in terms of the smaller base.</p>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Strategy Roadmap & Summary Table -->
-      <section class="bg-white rounded-[2.5rem] p-6 sm:p-10 border border-slate-200/90 shadow-soft-cloud space-y-6">
-        <div class="flex items-center gap-3 border-b border-slate-100 pb-5">
-          <span class="w-10 h-10 rounded-2xl bg-[#1D63ED] text-white flex items-center justify-center font-display font-black text-sm shadow-sm">§</span>
-          <div>
-            <span class="text-xs font-bold text-[#1D63ED] tracking-wider uppercase">Comprehensive Formula Matrix</span>
-            <h3 class="text-xl sm:text-2xl font-display font-black text-slate-900">Laws of Exponents Quick Reference</h3>
+            <p class="text-[11px] text-slate-500">Any non-zero base to power 0 is 1. Powers distribute over factors.</p>
           </div>
         </div>
+      </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                <th class="py-3 px-4">Law Name</th>
-                <th class="py-3 px-4">Algebraic Formula</th>
-                <th class="py-3 px-4">Practical Application</th>
-                <th class="py-3 px-4">Frequent Mistake to Avoid</th>
-              </tr>
-            </thead>
-            <tbody class="text-xs sm:text-sm divide-y divide-slate-100 font-medium">
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-3.5 px-4 font-bold text-blue-900">Product Law</td>
-                <td class="py-3.5 px-4 font-mono">$a^m \cdot a^n = a^{m+n}$</td>
-                <td class="py-3.5 px-4 font-mono">$2^x \cdot 2^3 = 2^{x+3}$</td>
-                <td class="py-3.5 px-4 text-rose-600">Multiplying bases: $2^x \cdot 2^3 \ne 4^{x+3}$</td>
-              </tr>
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-3.5 px-4 font-bold text-blue-900">Quotient Law</td>
-                <td class="py-3.5 px-4 font-mono">$\frac{a^m}{a^n} = a^{m-n}$</td>
-                <td class="py-3.5 px-4 font-mono">$\frac{3^{2x+1}}{3^x} = 3^{x+1}$</td>
-                <td class="py-3.5 px-4 text-rose-600">Dividing exponents instead of subtracting</td>
-              </tr>
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-3.5 px-4 font-bold text-blue-900">Power of a Power</td>
-                <td class="py-3.5 px-4 font-mono">$(a^m)^n = a^{m \cdot n}$</td>
-                <td class="py-3.5 px-4 font-mono">$(5^2)^{x+1} = 5^{2x+2}$</td>
-                <td class="py-3.5 px-4 text-rose-600">Forgetting to distribute: $5^{2x+1}$ (forgetting $2 \times 1$)</td>
-              </tr>
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-3.5 px-4 font-bold text-blue-900">Zero Exponent</td>
-                <td class="py-3.5 px-4 font-mono">$a^0 = 1 \quad (a \ne 0)$</td>
-                <td class="py-3.5 px-4 font-mono">$3^{x-4} = 1 \implies x - 4 = 0$</td>
-                <td class="py-3.5 px-4 text-rose-600">Thinking $a^0 = 0$</td>
-              </tr>
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-3.5 px-4 font-bold text-blue-900">Negative Exponent</td>
-                <td class="py-3.5 px-4 font-mono">$a^{-n} = \frac{1}{a^n}$</td>
-                <td class="py-3.5 px-4 font-mono">$\frac{1}{32} = 2^{-5}$</td>
-                <td class="py-3.5 px-4 text-rose-600">Assuming negative power makes the number negative</td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Teacher's Secret Hacks -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud space-y-4">
+        <h3 class="text-xl font-outfit font-extrabold text-slate-900 flex items-center gap-2">
+          <span class="text-amber-500">⚡</span> Mr Ahmed Abd El-Motaal's 6 Key Exam Hacks
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <div class="p-4 rounded-2xl bg-blue-50/60 border border-blue-100 space-y-1.5">
+            <div class="font-bold text-blue-900">1. Factor Tree Always</div>
+            <p class="text-slate-600">Always break large composite numbers ($81, 32, 625, 125$) into prime base powers ($3^4, 2^5, 5^4, 5^3$).</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-1.5">
+            <div class="font-bold text-indigo-900">2. Power of a Power Distribution</div>
+            <p class="text-slate-600">Remember $(a^m)^n = a^{m \cdot n}$. Distribute the inner power to ALL terms of a binomial power!</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100 space-y-1.5">
+            <div class="font-bold text-emerald-900">3. GCF Factor Extraction</div>
+            <p class="text-slate-600">When terms are added (e.g. $2^x + 2^{x+1} + 2^{x+2}$), pull out the smallest term $2^x$ as a common factor!</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 space-y-1.5">
+            <div class="font-bold text-purple-900">4. Chain Power Substitution</div>
+            <p class="text-slate-600">If $2^a = 27 = 3^3$ and $2^b = 3$, substitute $3 = 2^b$ directly to get $2^a = (2^b)^3 = 2^{3b}$.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-rose-50/60 border border-rose-100 space-y-1.5">
+            <div class="font-bold text-rose-900">5. Quadratic Power Factoring</div>
+            <p class="text-slate-600">If $2^{x^2} = 16^{3-x}$, simplify to a standard quadratic $x^2 + 4x - 12 = 0$ and solve for both roots!</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-100 space-y-1.5">
+            <div class="font-bold text-amber-900">6. Parity Verification</div>
+            <p class="text-slate-600">For even powers like $(x-1)^4 = 16$, always include both $\pm 2$ roots in your final solution set!</p>
+          </div>
         </div>
-      </section>
+      </div>
 
-    </div>
+    </section>
 
-    <!-- ========================================================================================= -->
-    <!-- SECTION 2: VIDEO PRACTICE SECTION (ALL 13 QUESTIONS IN CHRONOLOGICAL ORDER) -->
-    <!-- ========================================================================================= -->
-    <div id="tab-revision" class="tab-content hidden space-y-8">
+    <!-- ========================================================================= -->
+    <!-- TAB 2: VIDEO PRACTICE BANK (13 Exact Chronological Questions) -->
+    <!-- ========================================================================= -->
+    <section id="tabContent2" class="space-y-6 hidden">
       
-      <!-- Video Source Banner -->
-      <div class="bg-white rounded-[2.5rem] p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="space-y-1 text-center md:text-left">
-          <div class="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold border border-red-100">
-              <i class="ph-fill ph-youtube-logo text-sm"></i>
-              <span>YouTube Lecture Practice</span>
+      <!-- Video Questions Bank Header Banner (Exact Replica of IMG_1842.jpg) -->
+      <div class="bg-white rounded-[2.5rem] p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-2xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold">
+              <svg class="w-3.5 h-3.5 fill-current text-rose-600" viewBox="0 0 24 24">
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+              </svg>
+              YouTube Lecture Practice
             </span>
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#1D63ED] text-xs font-bold">
-              13 Lecture Problems • Full Chronological Order
+            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold">
+              13 Lecture Problems &bull; Full Chronological Order
             </span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-display font-black text-slate-900 mt-1">
+          <h2 class="text-2xl sm:text-3xl font-outfit font-extrabold text-slate-900 tracking-tight">
             Official Video Questions Bank
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500">
-            Every problem extracted directly from Mr Ahmed Abd El-Motaal's lecture in sequence, complete with timestamp references and model derivations.
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+            Every problem extracted directly from Mr Ahmed Abd El-Motaal's whiteboard in exact sequence, complete with timestamp references and model derivations.
           </p>
         </div>
 
         <div class="flex items-center gap-3">
-          <a href="https://youtu.be/VECZeDzBTIM" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-display font-bold transition shadow-md">
-            <i class="ph-fill ph-play text-sm"></i>
+          <a href="https://youtu.be/VECZeDzBTIM" target="_blank" class="px-6 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs sm:text-sm font-extrabold shadow-clay-btn transition-all flex items-center gap-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
             <span>Watch Video</span>
           </a>
-          <button onclick="resetRevisionBank()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-display font-bold transition shadow-xs active:scale-95">
-            <i class="ph-bold ph-arrows-clockwise text-base"></i>
+          <button onclick="resetPracticeBank()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs sm:text-sm font-extrabold border border-slate-200 transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4 fill-current text-slate-500" viewBox="0 0 24 24">
+              <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
             <span>Reset All</span>
           </button>
         </div>
       </div>
 
-      <!-- Revision Bank Container: Single Question Per Row -->
-      <div class="max-w-5xl mx-auto w-full space-y-6" id="revision-container">
-        <!-- Dynamically rendered by JavaScript -->
+      <!-- Questions List Container -->
+      <div id="practiceQuestionsContainer" class="space-y-6 max-w-5xl mx-auto w-full">
+        <!-- Injected via JavaScript -->
       </div>
-    </div>
 
-    <!-- ========================================================================================= -->
-    <!-- SECTION 3: TIMED EVALUATION QUIZ (3 ROTATING GRADED DIFFICULTY MODELS) -->
-    <!-- ========================================================================================= -->
-    <div id="tab-quiz" class="tab-content hidden space-y-8">
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: TIMED EVALUATION QUIZ (Matching IMG_1860.jpg) -->
+    <!-- ========================================================================= -->
+    <section id="tabContent3" class="space-y-6 hidden">
       
-      <div class="bg-white rounded-[2.5rem] p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="space-y-1 text-center md:text-left">
-          <div class="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-            <span class="px-3 py-1 rounded-full bg-blue-50 text-[#1D63ED] font-bold text-xs" id="quiz-bank-indicator">
-              Model 1: Foundations & Direct Bases
-            </span>
-            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs">
-              10 Marks Total
-            </span>
-            <span class="px-3 py-1 rounded-full bg-purple-50 text-purple-700 font-bold text-xs">
-              Graded Difficulty (L1 → L4)
-            </span>
-          </div>
-          <h2 class="text-2xl sm:text-3xl font-display font-black text-slate-900">
-            Exponential Equations Assessment
-          </h2>
-          <p class="text-xs text-slate-500">
-            Complete 10 multiple-choice problems within 15 minutes. Automatically graded with detailed feedback.
-          </p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-slate-900 text-white shadow-md">
-            <i class="ph-bold ph-timer text-amber-400 text-xl"></i>
-            <span id="quiz-timer" class="font-mono text-xl font-bold tracking-widest text-amber-300">15:00</span>
-          </div>
-
-          <button onclick="rotateQuizBank()" class="inline-flex items-center gap-1.5 px-4 py-3 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold transition active:scale-95">
-            <i class="ph-bold ph-arrows-clockwise text-base"></i>
-            <span>Next Model</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Navigation for Models -->
-      <div class="max-w-5xl mx-auto flex items-center justify-center gap-2">
-        <button onclick="switchQuizModel(0)" id="btn-model-0" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-[#1D63ED] text-white shadow-sm">
-          Model 1 (Foundations & Powers)
-        </button>
-        <button onclick="switchQuizModel(1)" id="btn-model-1" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 hover:bg-blue-50 border border-slate-200">
-          Model 2 (Inversions & Fractions)
-        </button>
-        <button onclick="switchQuizModel(2)" id="btn-model-2" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 hover:bg-blue-50 border border-slate-200">
-          Model 3 (Mastery & Quadratics)
-        </button>
-      </div>
-
-      <div class="max-w-5xl mx-auto w-full space-y-6" id="quiz-container">
-        <!-- Dynamically rendered -->
-      </div>
-
-      <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
-        <div class="text-xs text-slate-400 font-medium">
-          * Answers are submitted locally and graded instantly with a comprehensive breakdown.
-        </div>
-        <button onclick="submitQuiz()" id="btn-submit-quiz" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#1D63ED] hover:bg-blue-700 text-white font-display font-black text-base shadow-clay-btn active:translate-y-1 active:shadow-xs transition duration-150">
-          <i class="ph-bold ph-check-circle text-lg"></i>
-          <span>Submit Assessment & View Report</span>
-        </button>
-      </div>
-
-      <div id="quiz-report-card" class="hidden max-w-5xl mx-auto bg-white rounded-[2.5rem] p-6 sm:p-10 border border-slate-200/90 shadow-soft-cloud space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
-          <div>
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Evaluation Result</span>
-            <h3 class="text-2xl sm:text-3xl font-display font-black text-slate-900" id="report-grade-title">
-              Assessment Completed
-            </h3>
-          </div>
-          <div class="flex items-center gap-4">
-            <div class="text-right">
-              <div class="text-3xl sm:text-4xl font-display font-black text-[#1D63ED]" id="report-score-display">
-                0 / 10
-              </div>
-              <div class="text-xs font-bold text-slate-400" id="report-percent-display">0% Score</div>
+      <!-- Quiz Header & Timer Control Card (Exact Replica of IMG_1860.jpg) -->
+      <div class="bg-gradient-to-r from-[#091b42] via-[#0d265e] to-[#0a1e48] rounded-[2.5rem] p-6 sm:p-9 text-white shadow-soft-cloud relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="space-y-3 max-w-2xl">
+            <!-- Badges Row -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span class="px-3.5 py-1 rounded-full bg-blue-600 text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
+                OFFICIAL ASSESSMENT
+              </span>
+              <span id="quizVersionBadge" class="px-3.5 py-1 rounded-full bg-amber-400 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
+                QUIZ #1 OF 3
+              </span>
+              <span class="text-xs text-blue-200/90 font-medium">
+                10 Questions &bull; 10 Marks &bull; 15 Minutes
+              </span>
             </div>
-            <div id="report-badge-tier" class="px-4 py-2 rounded-2xl bg-emerald-100 text-emerald-800 font-display font-bold text-sm">
-              Outstanding
+
+            <!-- Title & Description -->
+            <h2 class="text-3xl sm:text-4xl font-outfit font-extrabold tracking-tight text-white">
+              Exponential Equations Quiz
+            </h2>
+            <p class="text-xs sm:text-sm text-blue-100/75 leading-relaxed">
+              Standardized assessment crafted according to the official Ministry of Education curriculum for <strong class="text-white">Math Prep 3</strong> by <strong class="text-white">Mr Ahmed Abd El-Motaal</strong>. Every attempt serves a fresh 10-question set.
+            </p>
+          </div>
+
+          <!-- Timer & Action Container -->
+          <div class="flex items-center gap-4 bg-white/10 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-white/15 self-start lg:self-center shadow-inner">
+            <div class="text-center sm:text-left pr-2">
+              <div class="text-[10px] uppercase tracking-widest text-blue-200/80 font-bold">REMAINING</div>
+              <div id="quizTimerText" class="text-2xl sm:text-3xl font-mono font-black text-amber-400 tracking-wider">15:00</div>
             </div>
+
+            <button id="quizActionBtn" onclick="startOrSubmitQuiz()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs sm:text-sm font-extrabold shadow-md transition-all flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <span id="quizActionBtnText">Start Quiz</span>
+            </button>
           </div>
         </div>
 
-        <div id="report-breakdown" class="space-y-4 pt-2"></div>
+        <!-- Single Assessment Status Row (Cleaner view without showing all 3 versions at once) -->
+        <div class="mt-7 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-blue-200/90 font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Current Assessment: <span id="currentFormLabel" class="text-white font-bold">Form A (Foundations)</span></span>
+          </div>
 
-        <div class="flex justify-end pt-4">
-          <button onclick="retakeQuiz()" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-display font-bold text-sm shadow-md transition">
-            <i class="ph-bold ph-arrow-counter-clockwise"></i>
-            <span>Try Next Model</span>
-          </button>
+          <div class="flex items-center gap-4 text-xs text-blue-200">
+            <span id="quizProgressCount" class="font-bold text-amber-300">0 / 10 Answered</span>
+            <button onclick="retakeCurrentQuiz()" class="text-xs font-medium text-blue-300 hover:text-white underline transition-colors">
+              Reset Attempt
+            </button>
+          </div>
         </div>
       </div>
 
-    </div>
+      <!-- Result Banner (Hidden until submitted) -->
+      <div id="quizResultBanner" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-2 border-blue-400 shadow-soft-cloud"></div>
+
+      <!-- Quiz Questions Container -->
+      <div id="quizQuestionsContainer" class="space-y-6 max-w-5xl mx-auto w-full">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+    </section>
 
   </main>
 
-  <!-- ========================================================================================= -->
-  <!-- JAVASCRIPT STATE ENGINE & DATA MATRICES -->
-  <!-- ========================================================================================= -->
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: DATA & INTERACTIVITY ENGINE -->
+  <!-- ========================================================================= -->
   <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-white', 'text-blue-700', 'shadow-sm');
-        btn.classList.add('text-slate-600');
-      });
-
-      const activeContent = document.getElementById(tabId);
-      if (activeContent) activeContent.classList.remove('hidden');
-
-      const activeBtn = document.getElementById(`btn-${tabId}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-slate-600');
-        activeBtn.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
-      }
-
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise();
-      }
-    }
-
-    let warmupRevealed = false;
-    function toggleWarmupCalculation() {
-      const box = document.getElementById('warmup-calculation-box');
-      const text = document.getElementById('warmup-btn-text');
-      warmupRevealed = !warmupRevealed;
-      if (warmupRevealed) {
-        box.classList.remove('hidden');
-        text.innerText = 'Hide The 3 Golden Rules';
-      } else {
-        box.classList.add('hidden');
-        text.innerText = 'Reveal The 3 Golden Rules';
-      }
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise();
-      }
-    }
-
-    /* Three.js 3D Background */
-    function initThreeJSBackground() {
+    // Audio Context Setup
+    let audioCtx = null;
+    function playTone(freq, type = 'sine', duration = 0.15) {
       try {
-        const canvas = document.getElementById('three-bg-canvas');
-        if (!canvas) return;
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 25;
-
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0x38a5f8, 0.8);
-        dirLight.position.set(10, 20, 15);
-        scene.add(dirLight);
-
-        const pointLight = new THREE.PointLight(0xa78bfa, 0.6);
-        pointLight.position.set(-10, -10, 10);
-        scene.add(pointLight);
-
-        const shapes = [];
-        const geometries = [
-          new THREE.TetrahedronGeometry(1.6, 0),
-          new THREE.OctahedronGeometry(1.4, 0),
-          new THREE.IcosahedronGeometry(1.5, 0),
-          new THREE.ConeGeometry(1.2, 2.2, 4),
-          new THREE.TorusGeometry(1.2, 0.4, 8, 20)
-        ];
-
-        const materials = [
-          new THREE.MeshStandardMaterial({ color: 0x93C5FD, roughness: 0.3, metalness: 0.1, transparent: true, opacity: 0.55 }),
-          new THREE.MeshStandardMaterial({ color: 0xA5B4FC, roughness: 0.4, metalness: 0.15, transparent: true, opacity: 0.5 }),
-          new THREE.MeshStandardMaterial({ color: 0x6EE7B7, roughness: 0.35, metalness: 0.1, transparent: true, opacity: 0.45 }),
-          new THREE.MeshStandardMaterial({ color: 0xFDE68A, roughness: 0.3, metalness: 0.2, transparent: true, opacity: 0.55 }),
-          new THREE.MeshStandardMaterial({ color: 0xFCA5A5, roughness: 0.4, metalness: 0.1, transparent: true, opacity: 0.45 })
-        ];
-
-        for (let i = 0; i < 14; i++) {
-          const geom = geometries[i % geometries.length];
-          const mat = materials[i % materials.length];
-          const mesh = new THREE.Mesh(geom, mat);
-
-          mesh.position.x = (Math.random() - 0.5) * 45;
-          mesh.position.y = (Math.random() - 0.5) * 35;
-          mesh.position.z = (Math.random() - 0.5) * 15;
-
-          mesh.rotation.x = Math.random() * Math.PI;
-          mesh.rotation.y = Math.random() * Math.PI;
-
-          mesh.userData = {
-            rotSpeedX: (Math.random() - 0.5) * 0.01,
-            rotSpeedY: (Math.random() - 0.5) * 0.012,
-            floatSpeed: 0.001 + Math.random() * 0.002,
-            initialY: mesh.position.y
-          };
-
-          shapes.push(mesh);
-          scene.add(mesh);
-        }
-
-        let mouseX = 0, mouseY = 0;
-        window.addEventListener('mousemove', (e) => {
-          mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-          mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        window.addEventListener('resize', () => {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        let clock = new THREE.Clock();
-        function animate() {
-          requestAnimationFrame(animate);
-          const elapsedTime = clock.getElapsedTime();
-
-          shapes.forEach(shape => {
-            shape.rotation.x += shape.userData.rotSpeedX;
-            shape.rotation.y += shape.userData.rotSpeedY;
-            shape.position.y = shape.userData.initialY + Math.sin(elapsedTime * 1.5 + shape.position.x) * 0.8;
-          });
-
-          camera.position.x += (mouseX * 2.5 - camera.position.x) * 0.05;
-          camera.position.y += (-mouseY * 2.5 - camera.position.y) * 0.05;
-          camera.lookAt(0, 0, 0);
-
-          renderer.render(scene, camera);
-        }
-
-        animate();
-      } catch (err) {
-        console.warn("Three.js initialization skipped:", err);
-      }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
     }
 
-    /* CHRONOLOGICAL VIDEO QUESTIONS (SECTION 2) */
-    const videoQuestions = [
+    // =========================================================================
+    // 1. DATA: 13 PRACTICE PROBLEMS (From Screenshots IMG_1845 to IMG_1858)
+    // =========================================================================
+    const practiceQuestions = [
       {
-        id: "vid-1",
-        number: 1,
+        id: 1,
+        topic: "Prime Base Factorization (Video #1)",
         timestamp: "04:26",
-        title: "Prime Base Factorization (Video #1)",
-        prompt: "Find the value of $x$ in the equation: $$3^{x+1} = 81$$",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "3^{x+1} = 81",
         options: [
-          { key: "A", text: "2" },
-          { key: "B", text: "3" },
-          { key: "C", text: "4" },
-          { key: "D", text: "5" }
+          { label: "A", text: "$2$", correct: false },
+          { label: "B", text: "$3$", correct: true },
+          { label: "C", text: "$4$", correct: false },
+          { label: "D", text: "$5$", correct: false }
         ],
-        correct: "B",
-        explanation: "At 04:26, $81 = 3^4$. Bases are equal: $x + 1 = 4 \\implies x = 4 - 1 = 3$."
+        explanation: "By factoring $81 = 9 \\times 9 = 3^4$. Thus $3^{x+1} = 3^4$. Since the bases are equal, $x+1 = 4 \\implies x = 3$."
       },
       {
-        id: "vid-2",
-        number: 2,
+        id: 2,
+        topic: "Fractional Power Flipping (Video #2)",
         timestamp: "06:35",
-        title: "Fractional Power Flipping (Video #2)",
-        prompt: "Find the value of $x$ in the equation: $$2^{x-7} = \\frac{1}{32}$$",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "2^{x-7} = \\frac{1}{32}",
         options: [
-          { key: "A", text: "2" },
-          { key: "B", text: "-2" },
-          { key: "C", text: "12" },
-          { key: "D", text: "-5" }
+          { label: "A", text: "$x = 2$", correct: true },
+          { label: "B", text: "$x = -2$", correct: false },
+          { label: "C", text: "$x = 12$", correct: false },
+          { label: "D", text: "$x = 5$", correct: false }
         ],
-        correct: "A",
-        explanation: "At 06:35, $\\frac{1}{32} = 2^{-5}$. Since bases are equal: $x - 7 = -5 \\implies x = 7 - 5 = 2$."
+        explanation: "Factor $32 = 2^5$, so $\\frac{1}{32} = 2^{-5}$. Thus $2^{x-7} = 2^{-5} \\implies x - 7 = -5 \\implies x = 2$."
       },
       {
-        id: "vid-3",
-        number: 3,
-        timestamp: "09:42",
-        title: "Rational Fraction Inversion (Video #3)",
-        prompt: "Find the value of $x$ in the equation: $$\\left(\\frac{2}{3}\\right)^{x+2} = \\frac{27}{8}$$",
+        id: 3,
+        topic: "Fraction Inversion with Cubes (Video #3)",
+        timestamp: "08:50",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "\\left(\\frac{2}{3}\\right)^{x+2} = \\frac{27}{8}",
         options: [
-          { key: "A", text: "1" },
-          { key: "B", text: "-1" },
-          { key: "C", text: "-5" },
-          { key: "D", text: "5" }
+          { label: "A", text: "$x = 1$", correct: false },
+          { label: "B", text: "$x = 3$", correct: false },
+          { label: "C", text: "$x = -5$", correct: true },
+          { label: "D", text: "$x = -1$", correct: false }
         ],
-        correct: "C",
-        explanation: "At 09:42, $\\frac{27}{8} = (\\frac{3}{2})^3 = (\\frac{2}{3})^{-3}$. Bases match: $x + 2 = -3 \\implies x = -5$."
+        explanation: "Notice $\\frac{27}{8} = (\\frac{3}{2})^3 = (\\frac{2}{3})^{-3}$. Thus $x+2 = -3 \\implies x = -5$."
       },
       {
-        id: "vid-4",
-        number: 4,
-        timestamp: "11:16",
-        title: "Power of a Power Multiplication (Video #4)",
-        prompt: "Find the value of $x$ in the equation: $$9^{x+2} = 3^x$$",
+        id: 4,
+        topic: "Equalizing to Base 3 (Video #4)",
+        timestamp: "11:15",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "9^{x+2} = 3^x",
         options: [
-          { key: "A", text: "-4" },
-          { key: "B", text: "4" },
-          { key: "C", text: "-2" },
-          { key: "D", text: "2" }
+          { label: "A", text: "$x = 4$", correct: false },
+          { label: "B", text: "$x = -4$", correct: true },
+          { label: "C", text: "$x = -2$", correct: false },
+          { label: "D", text: "$x = 2$", correct: false }
         ],
-        correct: "A",
-        explanation: "At 11:16, $9 = 3^2 \\implies (3^2)^{x+2} = 3^{2x+4}$. Equating exponents: $2x + 4 = x \\implies x = -4$."
+        explanation: "Rewrite $9 = 3^2$, giving $(3^2)^{x+2} = 3^{2x+4} = 3^x$. Therefore $2x+4 = x \\implies x = -4$."
       },
       {
-        id: "vid-5",
-        number: 5,
-        timestamp: "13:37",
-        title: "Powers of 5 on Both Sides (Video #5)",
-        prompt: "Find the value of $x$ in the equation: $$125^{x+1} = 625^{x-1}$$",
+        id: 5,
+        topic: "Powers of Base 5 (Video #5)",
+        timestamp: "13:40",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "(125)^{x+1} = (625)^{x-1}",
         options: [
-          { key: "A", text: "5" },
-          { key: "B", text: "7" },
-          { key: "C", text: "-7" },
-          { key: "D", text: "1" }
+          { label: "A", text: "$x = 7$", correct: true },
+          { label: "B", text: "$x = 5$", correct: false },
+          { label: "C", text: "$x = 3$", correct: false },
+          { label: "D", text: "$x = -7$", correct: false }
         ],
-        correct: "B",
-        explanation: "At 13:37, $125 = 5^3$ and $625 = 5^4$. So $5^{3x+3} = 5^{4x-4} \\implies 3x + 3 = 4x - 4 \\implies x = 7$."
+        explanation: "Factor bases: $125 = 5^3$ and $625 = 5^4$. Equation becomes $5^{3(x+1)} = 5^{4(x-1)} \\implies 3x+3 = 4x-4 \\implies x = 7$."
       },
       {
-        id: "vid-6",
-        number: 6,
-        timestamp: "16:58",
-        title: "Fractional Exponents & Distributive Signs (Video #6)",
-        prompt: "Find the value of $x$ in the equation: $$\\left(\\frac{3}{2}\\right)^{5-3x} = \\left(\\frac{4}{9}\\right)^{2x-7}$$",
+        id: 6,
+        topic: "Fraction Inversion & Distribution (Video #6)",
+        timestamp: "16:05",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "\\left(\\frac{3}{2}\\right)^{5-3x} = \\left(\\frac{4}{9}\\right)^{2x-7}",
         options: [
-          { key: "A", text: "3" },
-          { key: "B", text: "7" },
-          { key: "C", text: "9" },
-          { key: "D", text: "-9" }
+          { label: "A", text: "$x = 3$", correct: false },
+          { label: "B", text: "$x = 9$", correct: true },
+          { label: "C", text: "$x = -9$", correct: false },
+          { label: "D", text: "$x = 5$", correct: false }
         ],
-        correct: "C",
-        explanation: "At 16:58, $(\\frac{4}{9})^{2x-7} = (\\frac{2}{3})^{4x-14}$. Flipping the left side gives $(\\frac{2}{3})^{3x-5}$. Equating powers: $3x - 5 = 4x - 14 \\implies x = 9$."
+        explanation: "Rewrite $(\\frac{4}{9}) = (\\frac{2}{3})^2 = (\\frac{3}{2})^{-2}$. The RHS exponent is $-2(2x-7) = -4x+14$. Equating: $5-3x = -4x+14 \\implies x = 9$."
       },
       {
-        id: "vid-7",
-        number: 7,
-        timestamp: "19:12",
-        title: "Quadratic Exponent Reduction (Video #7)",
-        prompt: "Solve for $x$ in the equation: $$2^{x^2} = 16^{3-x}$$",
+        id: 7,
+        topic: "Quadratic Exponent Reduction (Video #7)",
+        timestamp: "18:50",
+        prompt: "Find the solution set of the equation in $\\mathbb{R}$:",
+        equation: "2^{x^2} = 16^{3-x}",
         options: [
-          { key: "A", text: "{2, -6}" },
-          { key: "B", text: "{2, 6}" },
-          { key: "C", text: "{-2, 6}" },
-          { key: "D", text: "{3, -4}" }
+          { label: "A", text: "$\\{2, 6\\}$", correct: false },
+          { label: "B", text: "$\\{-6, 2\\}$", correct: true },
+          { label: "C", text: "$\\{-2, 6\\}$", correct: false },
+          { label: "D", text: "$\\{3, 4\\}$", correct: false }
         ],
-        correct: "A",
-        explanation: "At 19:12, $16^{3-x} = 2^{4(3-x)} = 2^{12-4x}$. So $x^2 + 4x - 12 = 0 \\implies (x+6)(x-2) = 0 \\implies x \\in \\{2, -6\\}$."
+        explanation: "Rewrite $16 = 2^4$. Then $2^{x^2} = 2^{4(3-x)} = 2^{12-4x}$. Equating: $x^2 = 12-4x \\implies x^2 + 4x - 12 = 0 \\implies (x+6)(x-2) = 0 \\implies x \\in \\{-6, 2\\}$."
       },
       {
-        id: "vid-8",
-        number: 8,
-        timestamp: "22:54",
-        title: "Coprime Bases with Equal Power (Video #8)",
-        prompt: "Find the value of $x$ in the equation: $$2^{x+1} = 5^{x+1}$$",
+        id: 8,
+        topic: "Unequal Bases Law (Video #8)",
+        timestamp: "21:20",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "2^{x+1} = 3^{x+1}",
         options: [
-          { key: "A", text: "0" },
-          { key: "B", text: "-1" },
-          { key: "C", text: "1" },
-          { key: "D", text: "5" }
+          { label: "A", text: "$x = 1$", correct: false },
+          { label: "B", text: "$x = 0$", correct: false },
+          { label: "C", text: "$x = -1$", correct: true },
+          { label: "D", text: "$x = -2$", correct: false }
         ],
-        correct: "B",
-        explanation: "At 22:54, coprime bases $2 \\ne 5$ can only equate if the exponent is zero: $x + 1 = 0 \\implies x = -1$."
+        explanation: "Since bases $2 \\neq 3$, the common exponent must equal zero: $x + 1 = 0 \\implies x = -1$."
       },
       {
-        id: "vid-9",
-        number: 9,
-        timestamp: "23:28",
-        title: "Power Equaled to 1 (Square Root Rule) (Video #9)",
-        prompt: "Solve for $x$ in the equation: $$3^{x^2-9} = 1$$",
+        id: 9,
+        topic: "RHS = 1 Zero Law (Video #9)",
+        timestamp: "23:30",
+        prompt: "Find the solution set of the equation in $\\mathbb{R}$:",
+        equation: "4^{x^2-9} = 1",
         options: [
-          { key: "A", text: "{3}" },
-          { key: "B", text: "{-3}" },
-          { key: "C", text: "{3, -3}" },
-          { key: "D", text: "{9}" }
+          { label: "A", text: "$\\{3\\}$", correct: false },
+          { label: "B", text: "$\\{-3\\}$", correct: false },
+          { label: "C", text: "$\\{-3, 3\\}$", correct: true },
+          { label: "D", text: "$\\{9\\}$", correct: false }
         ],
-        correct: "C",
-        explanation: "At 23:28, the right side is 1 ('the gift'): $x^2 - 9 = 0 \\implies x^2 = 9 \\implies x = \\pm 3$."
+        explanation: "Since $4^0 = 1$, the exponent must be zero: $x^2 - 9 = 0 \\implies x^2 = 9 \\implies x = \\pm 3$."
       },
       {
-        id: "vid-10",
-        number: 10,
-        timestamp: "25:07",
-        title: "Simplifying Composite Fractions (Video #10)",
-        prompt: "Find the value of $n$ if: $$\\frac{12^{n-1}}{2^{n-1} \\times 3^{n-1}} = 1$$",
+        id: 10,
+        topic: "Composite Factor Distribution (Video #10)",
+        timestamp: "26:40",
+        prompt: "Find the value of $n$ in the equation:",
+        equation: "\\frac{12^{n-1}}{2^{n-1} \\times 3^{n-1}} = 1",
         options: [
-          { key: "A", text: "0" },
-          { key: "B", text: "1" },
-          { key: "C", text: "2" },
-          { key: "D", text: "-1" }
+          { label: "A", text: "$n = 1$", correct: true },
+          { label: "B", text: "$n = 2$", correct: false },
+          { label: "C", text: "$n = 0$", correct: false },
+          { label: "D", text: "$n = -1$", correct: false }
         ],
-        correct: "B",
-        explanation: "At 25:07, $\\frac{(2^2 \\cdot 3)^{n-1}}{2^{n-1} \\cdot 3^{n-1}} = 2^{n-1} = 1 \\implies n - 1 = 0 \\implies n = 1$."
+        explanation: "Factor denominator: $2^{n-1} \\times 3^{n-1} = (2 \\times 3)^{n-1} = 6^{n-1}$. Then $\\frac{12^{n-1}}{6^{n-1}} = (\\frac{12}{6})^{n-1} = 2^{n-1} = 1 = 2^0 \\implies n-1 = 0 \\implies n = 1$."
       },
       {
-        id: "vid-11",
-        number: 11,
-        timestamp: "28:09",
-        title: "Multiple Prime Base Simplification (Video #11)",
-        prompt: "Find the value of $n$ if: $$\\frac{2^n \\times 9^{n+1}}{18^n} = 3^n$$",
+        id: 11,
+        topic: "Exponent Simplification & Matching (Video #11)",
+        timestamp: "29:10",
+        prompt: "Find the value of $n$ in the equation:",
+        equation: "\\frac{2^n \\times 9^{n+1}}{18^n} = 3^n",
         options: [
-          { key: "A", text: "1" },
-          { key: "B", text: "2" },
-          { key: "C", text: "3" },
-          { key: "D", text: "4" }
+          { label: "A", text: "$n = 1$", correct: false },
+          { label: "B", text: "$n = 2$", correct: true },
+          { label: "C", text: "$n = 3$", correct: false },
+          { label: "D", text: "$n = 0$", correct: false }
         ],
-        correct: "B",
-        explanation: "At 28:09, $18^n = 2^n \\cdot 3^{2n}$, and $9^{n+1} = 3^{2n+2}$. Cancelling yields $3^2 = 3^n \\implies n = 2$."
+        explanation: "Factor $18^n = (2 \\times 9)^n = 2^n \\times 9^n$. The LHS simplifies to $\\frac{2^n \\times 9^{n+1}}{2^n \\times 9^n} = 9^1 = 9 = 3^2$. Equating to $3^n \\implies 3^n = 3^2 \\implies n = 2$."
       },
       {
-        id: "vid-12",
-        number: 12,
-        timestamp: "31:46",
-        title: "Factoring the Common Power $2^x$ (Video #12)",
-        prompt: "Solve for $x$ in the equation: $$2^x + 2^{x+1} + 2^{x+2} = 112$$",
+        id: 12,
+        topic: "Common Factor Splitting (Video #12)",
+        timestamp: "32:15",
+        prompt: "Find the value of $x$ in the equation:",
+        equation: "2^x + 2^{x+1} + 2^{x+2} = 112",
         options: [
-          { key: "A", text: "2" },
-          { key: "B", text: "3" },
-          { key: "C", text: "4" },
-          { key: "D", text: "5" }
+          { label: "A", text: "$x = 3$", correct: false },
+          { label: "B", text: "$x = 4$", correct: true },
+          { label: "C", text: "$x = 5$", correct: false },
+          { label: "D", text: "$x = 6$", correct: false }
         ],
-        correct: "C",
-        explanation: "At 31:46, factor out $2^x$: $2^x(1 + 2 + 4) = 112 \\implies 7 \\cdot 2^x = 112 \\implies 2^x = 16 \\implies x = 4$."
+        explanation: "Factor out $2^x$: $2^x(1 + 2^1 + 2^2) = 2^x(1+2+4) = 7 \\cdot 2^x = 112$. Divide by 7: $2^x = 16 = 2^4 \\implies x = 4$."
       },
       {
-        id: "vid-13",
-        number: 13,
-        timestamp: "35:10",
-        title: "Exponential Substitution Mastery (Video #13)",
-        prompt: "If $2^a = 27$ and $2^b = 3$, find the numerical value of the expression: $$\\frac{a + b}{b}$$",
+        id: 13,
+        topic: "Chain Power Substitution (Video #13)",
+        timestamp: "34:50",
+        prompt: "If $2^a = 27$ and $2^b = 3$, find the value of:",
+        equation: "\\frac{a+b}{b}",
         options: [
-          { key: "A", text: "2" },
-          { key: "B", text: "3" },
-          { key: "C", text: "4" },
-          { key: "D", text: "9" }
+          { label: "A", text: "$3$", correct: false },
+          { label: "B", text: "$4$", correct: true },
+          { label: "C", text: "$5$", correct: false },
+          { label: "D", text: "$9$", correct: false }
         ],
-        correct: "C",
-        explanation: "At 35:10, $27 = 3^3 = (2^b)^3 = 2^{3b} \\implies a = 3b$. Therefore $\\frac{3b+b}{b} = \\frac{4b}{b} = 4$."
+        explanation: "Notice $27 = 3^3 = (2^b)^3 = 2^{3b}$. Since $2^a = 2^{3b}$, we have $a = 3b$. Therefore $\\frac{a+b}{b} = \\frac{3b+b}{b} = \\frac{4b}{b} = 4$."
       }
     ];
 
-    function renderRevisionBank() {
-      const container = document.getElementById('revision-container');
+    // =========================================================================
+    // 2. DATA: 3 ROTATING QUIZ VERSIONS (30 Questions Total)
+    // =========================================================================
+    const quizVersionsData = {
+      1: {
+        title: "Version 1 (Form A: Foundations)",
+        questions: [
+          {
+            id: 101,
+            topic: "POWER CRITERIA",
+            prompt: "If $2^x = 64$, what is the value of $x$?",
+            options: [
+              { label: "A", text: "4", correct: false },
+              { label: "B", text: "5", correct: false },
+              { label: "C", text: "6", correct: true },
+              { label: "D", text: "8", correct: false }
+            ],
+            explanation: "Factor $64 = 2^6$. Since bases match, $x = 6$."
+          },
+          {
+            id: 102,
+            topic: "ZERO POWER PRINCIPLE",
+            prompt: "If $7^{x-4} = 1$, then $x$ equals:",
+            options: [
+              { label: "A", text: "4", correct: true },
+              { label: "B", text: "0", correct: false },
+              { label: "C", text: "-4", correct: false },
+              { label: "D", text: "7", correct: false }
+            ],
+            explanation: "Since $7^0 = 1$, the power $x - 4 = 0 \\implies x = 4$."
+          },
+          {
+            id: 103,
+            topic: "POWER EQUALITY",
+            prompt: "If $3^{2x-1} = 27$, then the value of $x$ is:",
+            options: [
+              { label: "A", text: "1", correct: false },
+              { label: "B", text: "2", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "$27 = 3^3 \\implies 2x - 1 = 3 \\implies 2x = 4 \\implies x = 2$."
+          },
+          {
+            id: 104,
+            topic: "PARITY & EVEN ROOTS",
+            prompt: "The solution set in $\\mathbb{R}$ for $(x-3)^2 = 25$ is:",
+            options: [
+              { label: "A", text: "$\\{8\\}$", correct: false },
+              { label: "B", text: "$\\{-2\\}$", correct: false },
+              { label: "C", text: "$\\{-2, 8\\}$", correct: true },
+              { label: "D", text: "$\\{5, -5\\}$", correct: false }
+            ],
+            explanation: "Take square roots: $x - 3 = \\pm 5 \\implies x = 8$ or $x = -2$."
+          },
+          {
+            id: 105,
+            topic: "ODD POWER PRESERVATION",
+            prompt: "If $(x+1)^3 = -8$, then $x$ equals:",
+            options: [
+              { label: "A", text: "-3", correct: true },
+              { label: "B", text: "1", correct: false },
+              { label: "C", text: "-1", correct: false },
+              { label: "D", text: "3", correct: false }
+            ],
+            explanation: "Odd power preserves negative sign: $x + 1 = \\sqrt[3]{-8} = -2 \\implies x = -3$."
+          },
+          {
+            id: 106,
+            topic: "UNEQUAL BASES RULE",
+            prompt: "If $5^{x+2} = 9^{x+2}$, what is the value of $x$?",
+            options: [
+              { label: "A", text: "2", correct: false },
+              { label: "B", text: "0", correct: false },
+              { label: "C", text: "-2", correct: true },
+              { label: "D", text: "No solution", correct: false }
+            ],
+            explanation: "Since bases $5 \\neq 9$, the power must be zero: $x + 2 = 0 \\implies x = -2$."
+          },
+          {
+            id: 107,
+            topic: "PRIME BASE DECOMPOSITION",
+            prompt: "If $4^{x+1} = 8$, what is $x$?",
+            options: [
+              { label: "A", text: "$\\frac{1}{2}$", correct: true },
+              { label: "B", text: "1", correct: false },
+              { label: "C", text: "2", correct: false },
+              { label: "D", text: "$\\frac{3}{2}$", correct: false }
+            ],
+            explanation: "Base 2: $(2^2)^{x+1} = 2^{2x+2} = 2^3 \\implies 2x+2 = 3 \\implies x = 0.5$."
+          },
+          {
+            id: 108,
+            topic: "NEGATIVE POWERS",
+            prompt: "If $3^{-x} = \\frac{1}{81}$, then $x$ equals:",
+            options: [
+              { label: "A", text: "-4", correct: false },
+              { label: "B", text: "4", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "-3", correct: false }
+            ],
+            explanation: "$\\frac{1}{81} = 3^{-4} \\implies -x = -4 \\implies x = 4$."
+          },
+          {
+            id: 109,
+            topic: "POWER OF A POWER",
+            prompt: "If $(2^x)^3 = 64$, what is the value of $x$?",
+            options: [
+              { label: "A", text: "1", correct: false },
+              { label: "B", text: "2", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "$2^{3x} = 2^6 \\implies 3x = 6 \\implies x = 2$."
+          },
+          {
+            id: 110,
+            topic: "EXPONENTIAL EXPRESSION VALUE",
+            prompt: "If $2^x = 5$, what is the value of $2^{x+1}$?",
+            options: [
+              { label: "A", text: "6", correct: false },
+              { label: "B", text: "10", correct: true },
+              { label: "C", text: "25", correct: false },
+              { label: "D", text: "7", correct: false }
+            ],
+            explanation: "$2^{x+1} = 2^x \\times 2^1 = 5 \\times 2 = 10$."
+          }
+        ]
+      },
+      2: {
+        title: "Version 2 (Form B: Fractions & Inversions)",
+        questions: [
+          {
+            id: 201,
+            topic: "FRACTIONAL INVERSION",
+            prompt: "If $(\\frac{3}{5})^x = \\frac{25}{9}$, then $x$ equals:",
+            options: [
+              { label: "A", text: "2", correct: false },
+              { label: "B", text: "-2", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "-3", correct: false }
+            ],
+            explanation: "$\\frac{25}{9} = (\\frac{5}{3})^2 = (\\frac{3}{5})^{-2} \\implies x = -2$."
+          },
+          {
+            id: 202,
+            topic: "DECIMAL CONVERSION",
+            prompt: "If $(0.5)^x = 16$, then $x$ is:",
+            options: [
+              { label: "A", text: "-4", correct: true },
+              { label: "B", text: "4", correct: false },
+              { label: "C", text: "-2", correct: false },
+              { label: "D", text: "2", correct: false }
+            ],
+            explanation: "$0.5 = 2^{-1}$ and $16 = 2^4 \\implies 2^{-x} = 2^4 \\implies x = -4$."
+          },
+          {
+            id: 203,
+            topic: "QUARTER DECIMAL BASES",
+            prompt: "If $(0.25)^{x-1} = 64$, what is $x$?",
+            options: [
+              { label: "A", text: "-2", correct: true },
+              { label: "B", text: "2", correct: false },
+              { label: "C", text: "-3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "$0.25 = 4^{-1}$. Thus $4^{-(x-1)} = 4^3 \\implies -x + 1 = 3 \\implies x = -2$."
+          },
+          {
+            id: 204,
+            topic: "ROOT POWER FORM",
+            prompt: "If $(\\sqrt{3})^x = 9$, then $x$ equals:",
+            options: [
+              { label: "A", text: "2", correct: false },
+              { label: "B", text: "4", correct: true },
+              { label: "C", text: "6", correct: false },
+              { label: "D", text: "3", correct: false }
+            ],
+            explanation: "$(\\sqrt{3})^x = 3^{x/2}$. Since $9 = 3^2$, $x/2 = 2 \\implies x = 4$."
+          },
+          {
+            id: 205,
+            topic: "ROOT FRACTIONS",
+            prompt: "If $(\\sqrt{2})^{2x} = 8$, what is $x$?",
+            options: [
+              { label: "A", text: "3", correct: true },
+              { label: "B", text: "6", correct: false },
+              { label: "C", text: "4", correct: false },
+              { label: "D", text: "2", correct: false }
+            ],
+            explanation: "$(\\sqrt{2})^{2x} = ((\\sqrt{2})^2)^x = 2^x = 8 = 2^3 \\implies x = 3$."
+          },
+          {
+            id: 206,
+            topic: "RHS = 1 WITH FRACTIONS",
+            prompt: "If $(\\frac{4}{7})^{x^2-4} = 1$, the solution set is:",
+            options: [
+              { label: "A", text: "$\\{2\\}$", correct: false },
+              { label: "B", text: "$\\{-2, 2\\}$", correct: true },
+              { label: "C", text: "$\\{4\\}$", correct: false },
+              { label: "D", text: "$\\{0\\}$", correct: false }
+            ],
+            explanation: "Power must be 0: $x^2 - 4 = 0 \\implies x = \\pm 2$."
+          },
+          {
+            id: 207,
+            topic: "POWER DIVISION",
+            prompt: "If $2^{x-1} = \\frac{1}{64}$, find $x$:",
+            options: [
+              { label: "A", text: "-5", correct: true },
+              { label: "B", text: "-6", correct: false },
+              { label: "C", text: "5", correct: false },
+              { label: "D", text: "7", correct: false }
+            ],
+            explanation: "$2^{x-1} = 2^{-6} \\implies x - 1 = -6 \\implies x = -5$."
+          },
+          {
+            id: 208,
+            topic: "RECIPROCAL EQUATION",
+            prompt: "If $5^{x+3} = \\frac{1}{125}$, what is $x$?",
+            options: [
+              { label: "A", text: "-6", correct: true },
+              { label: "B", text: "0", correct: false },
+              { label: "C", text: "-3", correct: false },
+              { label: "D", text: "3", correct: false }
+            ],
+            explanation: "$5^{x+3} = 5^{-3} \\implies x + 3 = -3 \\implies x = -6$."
+          },
+          {
+            id: 209,
+            topic: "DISTRIBUTIVE FRACTIONAL POWER",
+            prompt: "If $(\\frac{2}{5})^{x-1} = (\\frac{125}{8})$, then $x$ is:",
+            options: [
+              { label: "A", text: "-2", correct: true },
+              { label: "B", text: "2", correct: false },
+              { label: "C", text: "-3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "$\\frac{125}{8} = (\\frac{5}{2})^3 = (\\frac{2}{5})^{-3} \\implies x - 1 = -3 \\implies x = -2$."
+          },
+          {
+            id: 210,
+            topic: "EXPONENTIAL PRODUCT",
+            prompt: "If $3^x = 2$, what is the value of $3^{x-1}$?",
+            options: [
+              { label: "A", text: "$\\frac{2}{3}$", correct: true },
+              { label: "B", text: "1", correct: false },
+              { label: "C", text: "6", correct: false },
+              { label: "D", text: "$\\frac{3}{2}$", correct: false }
+            ],
+            explanation: "$3^{x-1} = \\frac{3^x}{3^1} = \\frac{2}{3}$."
+          }
+        ]
+      },
+      3: {
+        title: "Version 3 (Form C: Advanced & Factoring)",
+        questions: [
+          {
+            id: 301,
+            topic: "COMMON FACTOR SPLITTING",
+            prompt: "If $2^{x+1} + 2^x = 24$, what is the value of $x$?",
+            options: [
+              { label: "A", text: "2", correct: false },
+              { label: "B", text: "3", correct: true },
+              { label: "C", text: "4", correct: false },
+              { label: "D", text: "5", correct: false }
+            ],
+            explanation: "Factor out $2^x$: $2^x(2 + 1) = 3 \\cdot 2^x = 24 \\implies 2^x = 8 = 2^3 \\implies x = 3$."
+          },
+          {
+            id: 302,
+            topic: "COMMON FACTOR DIFFERENCE",
+            prompt: "If $3^{x+2} - 3^x = 72$, what is $x$?",
+            options: [
+              { label: "A", text: "1", correct: false },
+              { label: "B", text: "2", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "Factor out $3^x$: $3^x(3^2 - 1) = 3^x(8) = 72 \\implies 3^x = 9 = 3^2 \\implies x = 2$."
+          },
+          {
+            id: 303,
+            topic: "CHAIN SUBSTITUTION",
+            prompt: "If $3^x = 5$ and $5^y = 9$, then $x \\cdot y$ equals:",
+            options: [
+              { label: "A", text: "1", correct: false },
+              { label: "B", text: "2", correct: true },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "Substitute $5 = 3^x$ into the second equation: $(3^x)^y = 3^{xy} = 9 = 3^2 \\implies xy = 2$."
+          },
+          {
+            id: 304,
+            topic: "CHAIN SUBSTITUTION II",
+            prompt: "If $2^a = 3$ and $3^b = 8$, what is $a \\cdot b$?",
+            options: [
+              { label: "A", text: "2", correct: false },
+              { label: "B", text: "3", correct: true },
+              { label: "C", text: "4", correct: false },
+              { label: "D", text: "6", correct: false }
+            ],
+            explanation: "$3^b = (2^a)^b = 2^{ab} = 8 = 2^3 \\implies ab = 3$."
+          },
+          {
+            id: 305,
+            topic: "QUADRATIC POWER",
+            prompt: "If $3^{x^2 - 5x + 6} = 1$, the solution set is:",
+            options: [
+              { label: "A", text: "$\\{2, 3\\}$", correct: true },
+              { label: "B", text: "$\\{-2, -3\\}$", correct: false },
+              { label: "C", text: "$\\{1, 6\\}$", correct: false },
+              { label: "D", text: "$\\{0\\}$", correct: false }
+            ],
+            explanation: "$x^2 - 5x + 6 = 0 \\implies (x-2)(x-3) = 0 \\implies x \\in \\{2, 3\\}$."
+          },
+          {
+            id: 306,
+            topic: "SUM OF ROOTS",
+            prompt: "If $2^{x^2 - 4} = 1$, what is the sum of all roots?",
+            options: [
+              { label: "A", text: "0", correct: true },
+              { label: "B", text: "2", correct: false },
+              { label: "C", text: "-2", correct: false },
+              { label: "D", text: "4", correct: false }
+            ],
+            explanation: "$x^2 - 4 = 0 \\implies x = \\pm 2$. Sum is $2 + (-2) = 0$."
+          },
+          {
+            id: 307,
+            topic: "QUADRATIC REDUCTION",
+            prompt: "If $5^{2x} - 26(5^x) + 25 = 0$, what are the values of $x$?",
+            options: [
+              { label: "A", text: "$\\{0, 2\\}$", correct: true },
+              { label: "B", text: "$\\{1, 25\\}$", correct: false },
+              { label: "C", text: "$\\{1, 2\\}$", correct: false },
+              { label: "D", text: "$\\{-1, 0\\}$", correct: false }
+            ],
+            explanation: "Let $y = 5^x$: $y^2 - 26y + 25 = 0 \\implies (y-1)(y-25) = 0 \\implies 5^x = 1 (x=0)$ or $5^x = 25 (x=2)$."
+          },
+          {
+            id: 308,
+            topic: "POWERS OF ROOTS",
+            prompt: "If $(\\sqrt{5})^{x-1} = 25$, what is $x$?",
+            options: [
+              { label: "A", text: "3", correct: false },
+              { label: "B", text: "5", correct: true },
+              { label: "C", text: "4", correct: false },
+              { label: "D", text: "6", correct: false }
+            ],
+            explanation: "$5^{(x-1)/2} = 5^2 \\implies \\frac{x-1}{2} = 2 \\implies x - 1 = 4 \\implies x = 5$."
+          },
+          {
+            id: 309,
+            topic: "RECIPROCAL COMBINATION",
+            prompt: "If $4^x + 4^x + 4^x + 4^x = 4^6$, what is $x$?",
+            options: [
+              { label: "A", text: "5", correct: true },
+              { label: "B", text: "6", correct: false },
+              { label: "C", text: "4", correct: false },
+              { label: "D", text: "24", correct: false }
+            ],
+            explanation: "$4(4^x) = 4^{x+1} = 4^6 \\implies x + 1 = 6 \\implies x = 5$."
+          },
+          {
+            id: 310,
+            topic: "HIGHER BASE BALANCING",
+            prompt: "If $8^{x-1} = 16^{x-2}$, then $x$ equals:",
+            options: [
+              { label: "A", text: "5", correct: true },
+              { label: "B", text: "4", correct: false },
+              { label: "C", text: "3", correct: false },
+              { label: "D", text: "2", correct: false }
+            ],
+            explanation: "$2^{3(x-1)} = 2^{4(x-2)} \\implies 3x - 3 = 4x - 8 \\implies x = 5$."
+          }
+        ]
+      }
+    };
+
+    // State Variables
+    let userPracticeAnswers = {};
+    let activeQuizVersion = 1;
+    let userQuizAnswersByVersion = { 1: {}, 2: {}, 3: {} };
+    let quizSubmittedByVersion = { 1: false, 2: false, 3: false };
+    let quizStartedByVersion = { 1: false, 2: false, 3: false };
+    let quizTimerSeconds = 15 * 60;
+    let timerInterval = null;
+
+    // Window Load Initialization
+    window.addEventListener('load', () => {
+      initThreeBackground();
+      renderPracticeBank();
+      renderQuizQuestions();
+    });
+
+    // Main Tab Switching
+    function switchMainTab(tabIdx) {
+      playTone(480, 'sine', 0.08);
+      for (let i = 1; i <= 3; i++) {
+        const tabEl = document.getElementById(`tabContent${i}`);
+        const btnEl = document.getElementById(`tabBtn${i}`);
+        if (i === tabIdx) {
+          tabEl.classList.remove('hidden');
+          btnEl.className = "px-4 py-2 rounded-xl transition-all flex items-center gap-2 bg-white text-blue-700 shadow-sm font-extrabold";
+        } else {
+          tabEl.classList.add('hidden');
+          btnEl.className = "px-4 py-2 rounded-xl transition-all flex items-center gap-2 hover:text-slate-900";
+        }
+      }
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    }
+
+    // =========================================================================
+    // RENDER PRACTICE BANK (TAB 2: Exact Layout of IMG_1842)
+    // =========================================================================
+    function renderPracticeBank() {
+      const container = document.getElementById('practiceQuestionsContainer');
       if (!container) return;
-      container.innerHTML = '';
 
-      videoQuestions.forEach(q => {
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud space-y-5";
-        card.id = `rev-card-${q.id}`;
-
-        card.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
-            <div class="flex items-center gap-2">
-              <span class="px-3.5 py-1 rounded-full bg-blue-50 text-[#1D63ED] font-display font-bold text-xs">
-                Question ${q.number} of 13
-              </span>
-              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 text-xs font-mono font-bold border border-red-200">
-                <i class="ph-bold ph-clock"></i> ${q.timestamp}
+      container.innerHTML = practiceQuestions.map(q => {
+        const userChoice = userPracticeAnswers[q.id];
+        return `
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud space-y-5" id="practiceCard-${q.id}">
+            
+            <!-- Card Header: Badges & Topic -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold font-sans">
+                  Question ${q.id} of 13
+                </span>
+                <span class="px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-xs font-mono font-bold flex items-center gap-1">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 13H11v-5h1.5v5zm0-7H11V6h1.5v2z"/></svg>
+                  ${q.timestamp}
+                </span>
+              </div>
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                ${q.topic}
               </span>
             </div>
-            <span class="text-xs font-semibold text-slate-400">${q.title}</span>
-          </div>
 
-          <div class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">
-            ${q.prompt}
-          </div>
+            <!-- Prompt & Display Equation -->
+            <div class="space-y-3">
+              <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed font-sans">
+                ${q.prompt}
+              </h4>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center font-bold text-xl sm:text-2xl text-slate-900 tracking-wide font-mono">
+                $$${q.equation}$$
+              </div>
+            </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1" id="rev-options-${q.id}">
-            ${q.options.map(opt => `
-              <button onclick="checkRevisionAnswer('${q.id}', '${opt.key}')" id="rev-btn-${q.id}-${opt.key}" class="rev-opt-btn flex items-center justify-between p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/40 text-left transition duration-150 active:scale-[0.99]">
-                <div class="flex items-center gap-3">
-                  <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-mono font-bold flex items-center justify-center text-sm">
-                    ${opt.key}
-                  </span>
-                  <span class="font-bold text-slate-800 text-sm sm:text-base">${opt.text}</span>
+            <!-- 2x2 Options Grid (Matching IMG_1842) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              ${q.options.map((opt, optIdx) => {
+                let cardClass = "p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 transition-all flex items-center justify-between shadow-sm active:scale-[0.99] text-left";
+                let circleBorder = "border-slate-300";
+                let circleInner = "";
+
+                if (userChoice !== undefined) {
+                  if (opt.correct) {
+                    cardClass = "p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 flex items-center justify-between shadow-sm text-left";
+                    circleBorder = "border-emerald-600 bg-emerald-600";
+                    circleInner = `<div class="w-2 h-2 rounded-full bg-white"></div>`;
+                  } else if (userChoice === optIdx && !opt.correct) {
+                    cardClass = "p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 text-rose-950 flex items-center justify-between shadow-sm text-left";
+                    circleBorder = "border-rose-500 bg-rose-500";
+                    circleInner = `<div class="w-2 h-2 rounded-full bg-white"></div>`;
+                  }
+                }
+
+                return `
+                  <button 
+                    onclick="selectPracticeOption(${q.id}, ${optIdx})" 
+                    class="${cardClass}">
+                    
+                    <div class="flex items-center gap-3">
+                      <span class="w-7 h-7 rounded-xl bg-slate-100 font-bold text-xs text-slate-700 flex items-center justify-center font-mono">
+                        ${opt.label}
+                      </span>
+                      <span class="text-sm font-semibold text-slate-900">
+                        ${opt.text}
+                      </span>
+                    </div>
+
+                    <div class="w-5 h-5 rounded-full border-2 ${circleBorder} flex items-center justify-center flex-shrink-0">
+                      ${circleInner}
+                    </div>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <!-- Model Solution Box (Visible upon selection) -->
+            ${userChoice !== undefined ? `
+              <div class="mt-4 pt-4 border-t border-slate-100 bg-blue-50/50 p-4 sm:p-5 rounded-2xl border border-blue-100 text-xs sm:text-sm text-slate-700 font-mono leading-relaxed">
+                <div class="font-sans text-blue-900 font-bold mb-1 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                  Mr Ahmed Abd El-Motaal's Model Derivation:
                 </div>
-                <i class="ph-bold ph-circle text-slate-300 text-lg" id="rev-icon-${q.id}-${opt.key}"></i>
-              </button>
-            `).join('')}
-          </div>
+                ${q.explanation}
+              </div>
+            ` : ''}
 
-          <div id="rev-feedback-${q.id}" class="hidden p-5 rounded-2xl border text-xs sm:text-sm space-y-2"></div>
+          </div>
         `;
-        container.appendChild(card);
-      });
+      }).join('');
 
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise();
       }
     }
 
-    function checkRevisionAnswer(qId, selectedKey) {
-      const q = videoQuestions.find(item => item.id === qId);
-      if (!q) return;
-
-      const feedbackBox = document.getElementById(`rev-feedback-${qId}`);
-      feedbackBox.classList.remove('hidden');
-
-      q.options.forEach(opt => {
-        const btn = document.getElementById(`rev-btn-${qId}-${opt.key}`);
-        const icon = document.getElementById(`rev-icon-${qId}-${opt.key}`);
-        btn.disabled = true;
-
-        if (opt.key === q.correct) {
-          btn.classList.remove('border-slate-200', 'bg-white');
-          btn.classList.add('border-emerald-500', 'bg-emerald-50/70', 'text-emerald-900');
-          icon.className = "ph-bold ph-check-circle text-emerald-600 text-xl";
-        } else if (opt.key === selectedKey && selectedKey !== q.correct) {
-          btn.classList.remove('border-slate-200', 'bg-white');
-          btn.classList.add('border-rose-400', 'bg-rose-50/70', 'text-rose-900');
-          icon.className = "ph-bold ph-x-circle text-rose-500 text-xl";
-        }
-      });
-
-      if (selectedKey === q.correct) {
-        feedbackBox.className = "p-5 rounded-2xl border border-emerald-200 bg-emerald-50/60 text-emerald-900 text-xs sm:text-sm space-y-1.5";
-        feedbackBox.innerHTML = `
-          <div class="flex items-center gap-2 font-display font-bold text-emerald-800">
-            <i class="ph-bold ph-check text-base"></i> Correct Choice! (Timestamp: ${q.timestamp})
-          </div>
-          <p class="font-sans leading-relaxed">${q.explanation}</p>
-        `;
+    function selectPracticeOption(questionId, optionIdx) {
+      userPracticeAnswers[questionId] = optionIdx;
+      const q = practiceQuestions.find(x => x.id === questionId);
+      if (q && q.options[optionIdx].correct) {
+        playTone(600, 'sine', 0.12);
       } else {
-        feedbackBox.className = "p-5 rounded-2xl border border-rose-200 bg-rose-50/60 text-rose-900 text-xs sm:text-sm space-y-1.5";
-        feedbackBox.innerHTML = `
-          <div class="flex items-center gap-2 font-display font-bold text-rose-800">
-            <i class="ph-bold ph-warning-circle text-base"></i> Teacher's Lecture Walkthrough (Timestamp: ${q.timestamp}):
-          </div>
-          <p class="font-sans leading-relaxed">${q.explanation}</p>
-        `;
+        playTone(280, 'square', 0.15);
       }
-
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise();
-      }
+      renderPracticeBank();
     }
 
-    function resetRevisionBank() {
-      renderRevisionBank();
+    function resetPracticeBank() {
+      playTone(400, 'sine', 0.1);
+      userPracticeAnswers = {};
+      renderPracticeBank();
     }
 
-    /* ========================================================================================= */
-    /* 3 COMPREHENSIVE, GRADED DIFFICULTY QUIZ MODELS (30 UNIQUE NON-REPEATING QUESTIONS) */
-    /* ========================================================================================= */
-    const quizModels = [
-      // MODEL 1: Foundations, Direct Prime Bases & Power Rules
-      {
-        name: "Model 1: Foundations & Direct Bases",
-        questions: [
-          {
-            id: "m1_1",
-            level: "Level 1 (Foundational)",
-            text: "Solve for $x$: $$2^{x-3} = 16$$",
-            options: [{k:"A", t:"5"}, {k:"B", t:"6"}, {k:"C", t:"7"}, {k:"D", t:"8"}],
-            correct: "C",
-            exp: "$16 = 2^4 \\implies x - 3 = 4 \\implies x = 7$."
-          },
-          {
-            id: "m1_2",
-            level: "Level 1 (Foundational)",
-            text: "Find the solution set of: $$5^{3x-6} = 1$$",
-            options: [{k:"A", t:"{0}"}, {k:"B", t:"{1}"}, {k:"C", t:"{2}"}, {k:"D", t:"{3}"}],
-            correct: "C",
-            exp: "Unit RHS implies exponent equals 0: $3x - 6 = 0 \\implies 3x = 6 \\implies x = 2$."
-          },
-          {
-            id: "m1_3",
-            level: "Level 1 (Foundational)",
-            text: "If $3^x = 81$, what is the numerical value of $3^{x-2}$?",
-            options: [{k:"A", t:"3"}, {k:"B", t:"9"}, {k:"C", t:"27"}, {k:"D", t:"81"}],
-            correct: "B",
-            exp: "$81 = 3^4 \\implies x = 4$. Therefore $3^{4-2} = 3^2 = 9$."
-          },
-          {
-            id: "m1_4",
-            level: "Level 2 (Intermediate)",
-            text: "Solve for $x$ in $\\mathbb{R}$: $$4^{x+1} = 64$$",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"3"}, {k:"D", t:"4"}],
-            correct: "B",
-            exp: "$4^{x+1} = 4^3 \\implies x + 1 = 3 \\implies x = 2$."
-          },
-          {
-            id: "m1_5",
-            level: "Level 2 (Intermediate)",
-            text: "If $7^{x+4} = 9^{x+4}$, what is the value of $x$?",
-            options: [{k:"A", t:"-4"}, {k:"B", t:"0"}, {k:"C", t:"4"}, {k:"D", t:"-7"}],
-            correct: "A",
-            exp: "Bases 7 and 9 are coprime. Powers must equal 0: $x + 4 = 0 \\implies x = -4$."
-          },
-          {
-            id: "m1_6",
-            level: "Level 2 (Intermediate)",
-            text: "Solve for $x$: $$\\left(\\frac{1}{2}\\right)^{x-3} = 8$$",
-            options: [{k:"A", t:"0"}, {k:"B", t:"-3"}, {k:"C", t:"6"}, {k:"D", t:"3"}],
-            correct: "A",
-            exp: "$(2^{-1})^{x-3} = 2^{3-x} = 2^3 \\implies 3 - x = 3 \\implies x = 0$."
-          },
-          {
-            id: "m1_7",
-            level: "Level 3 (Advanced)",
-            text: "Solve for $x$: $$2^{x+2} + 2^x = 40$$",
-            options: [{k:"A", t:"2"}, {k:"B", t:"3"}, {k:"C", t:"4"}, {k:"D", t:"5"}],
-            correct: "B",
-            exp: "Factor $2^x$: $2^x(2^2 + 1) = 40 \\implies 5 \\cdot 2^x = 40 \\implies 2^x = 8 \\implies x = 3$."
-          },
-          {
-            id: "m1_8",
-            level: "Level 3 (Advanced)",
-            text: "Find the solution set of: $$3^{x^2-16} = 1$$",
-            options: [{k:"A", t:"{4}"}, {k:"B", t:"{-4}"}, {k:"C", t:"{4, -4}"}, {k:"D", t:"{16}"}],
-            correct: "C",
-            exp: "Right side is 1: $x^2 - 16 = 0 \\implies x^2 = 16 \\implies x = \\pm 4$."
-          },
-          {
-            id: "m1_9",
-            level: "Level 4 (Mastery)",
-            text: "If $2^{2x} - 10 \\cdot 2^x + 16 = 0$, the solution set in $\\mathbb{R}$ is:",
-            options: [{k:"A", t:"{1, 3}"}, {k:"B", t:"{2, 8}"}, {k:"C", t:"{1, 4}"}, {k:"D", t:"{2, 3}"}],
-            correct: "A",
-            exp: "Let $y = 2^x$: $y^2 - 10y + 16 = 0 \\implies (y-8)(y-2) = 0 \\implies 2^x = 8 \\implies x = 3$, and $2^x = 2 \\implies x = 1$."
-          },
-          {
-            id: "m1_10",
-            level: "Level 4 (Mastery)",
-            text: "If $3^a = 32$ and $3^b = 2$, find the value of $\\frac{a - b}{b}$:",
-            options: [{k:"A", t:"2"}, {k:"B", t:"3"}, {k:"C", t:"4"}, {k:"D", t:"5"}],
-            correct: "C",
-            exp: "$32 = 2^5 = (3^b)^5 = 3^{5b} \\implies a = 5b$. Then $\\frac{5b - b}{b} = \\frac{4b}{b} = 4$."
-          }
-        ]
-      },
+    // =========================================================================
+    // RENDER QUIZ (TAB 3: Matching IMG_1860.jpg)
+    // =========================================================================
+    function renderQuizQuestions() {
+      const container = document.getElementById('quizQuestionsContainer');
+      if (!container) return;
 
-      // MODEL 2: Inversions, Composite Fractions & Balanced Powers
-      {
-        name: "Model 2: Inversions & Rational Fractions",
-        questions: [
-          {
-            id: "m2_1",
-            level: "Level 1 (Foundational)",
-            text: "Solve for $x$: $$3^{2x-1} = 27$$",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"3"}, {k:"D", t:"4"}],
-            correct: "B",
-            exp: "$27 = 3^3 \\implies 2x - 1 = 3 \\implies 2x = 4 \\implies x = 2$."
-          },
-          {
-            id: "m2_2",
-            level: "Level 1 (Foundational)",
-            text: "Find $x$ in: $$10^{x+2} = 0.001$$",
-            options: [{k:"A", t:"-1"}, {k:"B", t:"-3"}, {k:"C", t:"-5"}, {k:"D", t:"5"}],
-            correct: "C",
-            exp: "$0.001 = 10^{-3} \\implies x + 2 = -3 \\implies x = -5$."
-          },
-          {
-            id: "m2_3",
-            level: "Level 1 (Foundational)",
-            text: "If $4^x = 8$, what is the value of $x$?",
-            options: [{k:"A", t:"1"}, {k:"B", t:"1.5"}, {k:"C", t:"2"}, {k:"D", t:"2.5"}],
-            correct: "B",
-            exp: "$2^{2x} = 2^3 \\implies 2x = 3 \\implies x = 1.5$."
-          },
-          {
-            id: "m2_4",
-            level: "Level 2 (Intermediate)",
-            text: "Solve for $x$: $$\\left(\\frac{3}{5}\\right)^{x-2} = \\frac{125}{27}$$",
-            options: [{k:"A", t:"-1"}, {k:"B", t:"1"}, {k:"C", t:"-3"}, {k:"D", t:"5"}],
-            correct: "A",
-            exp: "$\\frac{125}{27} = (\\frac{5}{3})^3 = (\\frac{3}{5})^{-3} \\implies x - 2 = -3 \\implies x = -1$."
-          },
-          {
-            id: "m2_5",
-            level: "Level 2 (Intermediate)",
-            text: "If $2^x \\cdot 5^x = 1000$, what is the value of $x$?",
-            options: [{k:"A", t:"2"}, {k:"B", t:"3"}, {k:"C", t:"4"}, {k:"D", t:"10"}],
-            correct: "B",
-            exp: "$(2 \\cdot 5)^x = 10^x = 1000 = 10^3 \\implies x = 3$."
-          },
-          {
-            id: "m2_6",
-            level: "Level 2 (Intermediate)",
-            text: "If $5^{x-1} = 2^{x-1}$, then $x$ equals:",
-            options: [{k:"A", t:"0"}, {k:"B", t:"1"}, {k:"C", t:"2"}, {k:"D", t:"5"}],
-            correct: "B",
-            exp: "Coprime bases equal only when power is zero: $x - 1 = 0 \\implies x = 1$."
-          },
-          {
-            id: "m2_7",
-            level: "Level 3 (Advanced)",
-            text: "Find the value of $n$ if: $$\\frac{18^{n+1}}{2^{n+1} \\cdot 9^{n+1}} = 1$$",
-            options: [{k:"A", t:"Any real number $\\mathbb{R}$"}, {k:"B", t:"0"}, {k:"C", t:"1"}, {k:"D", t:"2"}],
-            correct: "A",
-            exp: "Since $2 \\cdot 9 = 18$, the numerator and denominator are identical for all $n$: $\\frac{18^{n+1}}{18^{n+1}} = 1$ holds for all $n \\in \\mathbb{R}$."
-          },
-          {
-            id: "m2_8",
-            level: "Level 3 (Advanced)",
-            text: "Solve for $x$: $$3^{x+1} - 3^{x-1} = 24$$",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"3"}, {k:"D", t:"4"}],
-            correct: "B",
-            exp: "$3^x(3 - \\frac{1}{3}) = 3^x(\\frac{8}{3}) = 24 \\implies 3^x = 24 \\cdot \\frac{3}{8} = 9 \\implies x = 2$."
-          },
-          {
-            id: "m2_9",
-            level: "Level 4 (Mastery)",
-            text: "Solve for $x$ in $\\mathbb{R}$: $$5^{x^2} = 25^{x+4}$$",
-            options: [{k:"A", t:"{4, -2}"}, {k:"B", t:"{-4, 2}"}, {k:"C", t:"{2, -4}"}, {k:"D", t:"{4, 2}"}],
-            correct: "A",
-            exp: "$5^{x^2} = 5^{2x+8} \\implies x^2 - 2x - 8 = 0 \\implies (x-4)(x+2) = 0 \\implies x = 4$ or $x = -2$."
-          },
-          {
-            id: "m2_10",
-            level: "Level 4 (Mastery)",
-            text: "If $5^x = 2$, then the value of $5^{2x+1}$ is:",
-            options: [{k:"A", t:"9"}, {k:"B", t:"20"}, {k:"C", t:"25"}, {k:"D", t:"50"}],
-            correct: "B",
-            exp: "$5^{2x+1} = (5^x)^2 \\cdot 5^1 = (2)^2 \\cdot 5 = 4 \\cdot 5 = 20$."
-          }
-        ]
-      },
+      const currentVerData = quizVersionsData[activeQuizVersion];
+      if (!currentVerData) return;
 
-      // MODEL 3: Mastery, Quadratics & Higher-Order Relations
-      {
-        name: "Model 3: Mastery & Quadratic Reductions",
-        questions: [
-          {
-            id: "m3_1",
-            level: "Level 1 (Foundational)",
-            text: "Solve for $x$: $$7^{2x-5} = 49$$",
-            options: [{k:"A", t:"2.5"}, {k:"B", t:"3"}, {k:"C", t:"3.5"}, {k:"D", t:"4"}],
-            correct: "C",
-            exp: "$49 = 7^2 \\implies 2x - 5 = 2 \\implies 2x = 7 \\implies x = 3.5$."
-          },
-          {
-            id: "m3_2",
-            level: "Level 1 (Foundational)",
-            text: "Solve for $x$: $$3^{x-5} = \\frac{1}{27}$$",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"-2"}, {k:"D", t:"8"}],
-            correct: "B",
-            exp: "$\\frac{1}{27} = 3^{-3} \\implies x - 5 = -3 \\implies x = 2$."
-          },
-          {
-            id: "m3_3",
-            level: "Level 1 (Foundational)",
-            text: "If $2^x = 7$, what is the numerical value of $2^{x-1}$?",
-            options: [{k:"A", t:"3"}, {k:"B", t:"3.5"}, {k:"C", t:"6"}, {k:"D", t:"14"}],
-            correct: "B",
-            exp: "$2^{x-1} = \\frac{2^x}{2} = \\frac{7}{2} = 3.5$."
-          },
-          {
-            id: "m3_4",
-            level: "Level 2 (Intermediate)",
-            text: "Solve for $x$: $$8^{x-1} = 16$$",
-            options: [{k:"A", t:"\\frac{7}{3}"}, {k:"B", t:"2"}, {k:"C", t:"\\frac{5}{3}"}, {k:"D", t:"3"}],
-            correct: "A",
-            exp: "$2^{3(x-1)} = 2^4 \\implies 3x - 3 = 4 \\implies 3x = 7 \\implies x = \\frac{7}{3}$."
-          },
-          {
-            id: "m3_5",
-            level: "Level 2 (Intermediate)",
-            text: "Find the solution set of: $$6^{x^2-25} = 1$$",
-            options: [{k:"A", t:"{5}"}, {k:"B", t:"{-5}"}, {k:"C", t:"{5, -5}"}, {k:"D", t:"{25}"}],
-            correct: "C",
-            exp: "$x^2 - 25 = 0 \\implies x^2 = 25 \\implies x = \\pm 5$."
-          },
-          {
-            id: "m3_6",
-            level: "Level 2 (Intermediate)",
-            text: "If $3^{x+1} + 3^x = 108$, what is $x$?",
-            options: [{k:"A", t:"2"}, {k:"B", t:"3"}, {k:"C", t:"4"}, {k:"D", t:"5"}],
-            correct: "B",
-            exp: "$3^x(3 + 1) = 108 \\implies 4 \\cdot 3^x = 108 \\implies 3^x = 27 \\implies x = 3$."
-          },
-          {
-            id: "m3_7",
-            level: "Level 3 (Advanced)",
-            text: "Solve for $x$: $$\\left(\\frac{2}{5}\\right)^{3x-1} = \\left(\\frac{25}{4}\\right)^{x-2}$$",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"3"}, {k:"D", t:"-1"}],
-            correct: "A",
-            exp: "$\\frac{25}{4} = (\\frac{2}{5})^{-2} \\implies (\\frac{2}{5})^{-2(x-2)} = (\\frac{2}{5})^{4-2x}$. Then $3x - 1 = 4 - 2x \\implies 5x = 5 \\implies x = 1$."
-          },
-          {
-            id: "m3_8",
-            level: "Level 3 (Advanced)",
-            text: "Solve for $x$: $$2^{x^2} = 8^{2-x}$$",
-            options: [{k:"A", t:"{1, -6}"}, {k:"B", t:"{2, -3}"}, {k:"C", t:"{-6, 1}"}, {k:"D", t:"{2, -6}"}],
-            correct: "A",
-            exp: "$2^{x^2} = 2^{3(2-x)} \\implies x^2 = 6 - 3x \\implies x^2 + 3x - 6 = 0$, let's recheck: $8^{2-x} = 2^{6-3x} \\implies x^2 + 3x - 6$? With $(x+6)(x-1) = x^2+5x-6$. If $2^{x^2} = 4^{3-x} = 2^{6-2x}$, $x^2+2x-6$. For $x^2 + 5x - 6 = 0 \\implies x \\in \\{1, -6\\}$."
-          },
-          {
-            id: "m3_9",
-            level: "Level 4 (Mastery)",
-            text: "If $3^x = 7$ and $7^y = 9$, what is the numerical value of $x \\cdot y$?",
-            options: [{k:"A", t:"1"}, {k:"B", t:"2"}, {k:"C", t:"3"}, {k:"D", t:"14"}],
-            correct: "B",
-            exp: "Substitute $7 = 3^x$ into the second equation: $(3^x)^y = 9 \\implies 3^{xy} = 3^2 \\implies x \\cdot y = 2$."
-          },
-          {
-            id: "m3_10",
-            level: "Level 4 (Mastery)",
-            text: "If $3^{2x} - 12 \\cdot 3^x + 27 = 0$, find the solutions in $\\mathbb{R}$:",
-            options: [{k:"A", t:"{1, 2}"}, {k:"B", t:"{3, 9}"}, {k:"C", t:"{0, 2}"}, {k:"D", t:"{1, 3}"}],
-            correct: "A",
-            exp: "Let $y = 3^x$: $y^2 - 12y + 27 = 0 \\implies (y-9)(y-3) = 0 \\implies 3^x = 9 \\implies x = 2$, and $3^x = 3 \\implies x = 1$."
-          }
-        ]
+      const currentAnswers = userQuizAnswersByVersion[activeQuizVersion];
+      const isSubmitted = quizSubmittedByVersion[activeQuizVersion];
+      const isStarted = quizStartedByVersion[activeQuizVersion];
+
+      const badgeEl = document.getElementById('quizVersionBadge');
+      if (badgeEl) badgeEl.innerText = `QUIZ #${activeQuizVersion} OF 3`;
+
+      const formLabelEl = document.getElementById('currentFormLabel');
+      if (formLabelEl) formLabelEl.innerText = currentVerData.title;
+
+      const actionBtnText = document.getElementById('quizActionBtnText');
+      if (actionBtnText) {
+        if (isSubmitted) actionBtnText.innerText = "View Results";
+        else if (isStarted) actionBtnText.innerText = "Submit Quiz";
+        else actionBtnText.innerText = "Start Quiz";
       }
-    ];
 
-    let currentModelIdx = 0;
-    let quizUserAnswers = {};
-    let quizTimerInterval = null;
-    let quizSecondsRemaining = 15 * 60;
-
-    function switchQuizModel(idx) {
-      currentModelIdx = idx;
-      for (let i = 0; i < 3; i++) {
-        const btn = document.getElementById(`btn-model-${i}`);
-        if (i === idx) {
-          btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-[#1D63ED] text-white shadow-sm";
-        } else {
-          btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 hover:bg-blue-50 border border-slate-200";
-        }
-      }
-      renderCurrentQuiz();
-      startQuizTimer();
-    }
-
-    function renderCurrentQuiz() {
-      const container = document.getElementById('quiz-container');
-      const bankBadge = document.getElementById('quiz-bank-indicator');
-      if (!container || !bankBadge) return;
-
-      const model = quizModels[currentModelIdx];
-      bankBadge.innerText = model.name;
-      container.innerHTML = '';
-      quizUserAnswers = {};
-
-      document.getElementById('quiz-report-card').classList.add('hidden');
-
-      model.questions.forEach((q, idx) => {
-        const qCard = document.createElement('div');
-        qCard.className = "bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft-cloud space-y-4";
-        qCard.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <div class="flex items-center gap-2">
-              <span class="px-3.5 py-1 rounded-full bg-blue-50 text-[#1D63ED] font-display font-bold text-xs">
-                Question ${idx + 1} of 10
-              </span>
-              <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono text-[11px] font-bold">
-                ${q.level}
+      container.innerHTML = currentVerData.questions.map((q, qIndex) => {
+        const selectedIdx = currentAnswers[q.id];
+        return `
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft-cloud space-y-5" id="quizCard-${q.id}">
+            
+            <!-- Top Header: Circular Number Badge + Category + 1 Mark Tag (Matching IMG_1860) -->
+            <div class="flex items-center justify-between pb-1">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-sm">
+                  ${qIndex + 1}
+                </span>
+                <span class="font-sans font-extrabold text-slate-500 text-xs sm:text-sm uppercase tracking-wider">
+                  ${q.topic || 'EXPONENTIAL CRITERIA'}
+                </span>
+              </div>
+              <span class="px-3.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold font-sans">
+                1 Mark
               </span>
             </div>
-            <span class="text-xs font-mono font-bold text-slate-400">1 Mark</span>
-          </div>
 
-          <p class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">
-            ${q.text}
-          </p>
+            <!-- Question Prompt -->
+            <div class="pt-1">
+              <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">${q.prompt}</h4>
+            </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
-            ${q.options.map(opt => `
-              <button type="button" onclick="selectQuizOption('${q.id}', '${opt.k}')" id="quiz-opt-${q.id}-${opt.k}" class="quiz-option-btn flex items-center justify-between p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/40 text-left transition duration-150 active:scale-[0.99]">
-                <div class="flex items-center gap-3">
-                  <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-mono font-bold flex items-center justify-center text-sm">
-                    ${opt.k}
-                  </span>
-                  <span class="font-bold text-slate-800 text-sm sm:text-base">${opt.t}</span>
-                </div>
-                <i class="ph-bold ph-circle text-slate-300 text-lg" id="quiz-icon-${q.id}-${opt.k}"></i>
-              </button>
-            `).join('')}
+            <!-- Options Grid (Matching IMG_1860 Radio + Letter style) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              ${q.options.map((opt, optIdx) => {
+                let cardClass = "p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 transition-all flex items-center gap-3 shadow-sm active:scale-[0.99] text-left";
+                let radioBorder = "border-slate-300";
+                let radioInner = "";
+                let letterColor = "text-blue-600";
+
+                if (selectedIdx === optIdx) {
+                  cardClass = "p-4 rounded-2xl border-2 border-blue-600 bg-blue-50/70 text-slate-900 transition-all flex items-center gap-3 shadow-md text-left";
+                  radioBorder = "border-blue-600";
+                  radioInner = `<div class="w-2.5 h-2.5 rounded-full bg-blue-600"></div>`;
+                  letterColor = "text-blue-700 font-extrabold";
+                }
+
+                if (isSubmitted) {
+                  if (opt.correct) {
+                    cardClass = "p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 flex items-center gap-3 shadow-sm text-left";
+                    radioBorder = "border-emerald-600 bg-emerald-600";
+                    radioInner = `<div class="w-2 h-2 rounded-full bg-white"></div>`;
+                    letterColor = "text-emerald-700 font-extrabold";
+                  } else if (selectedIdx === optIdx && !opt.correct) {
+                    cardClass = "p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 text-rose-950 flex items-center gap-3 shadow-sm text-left";
+                    radioBorder = "border-rose-500 bg-rose-500";
+                    radioInner = `<div class="w-2 h-2 rounded-full bg-white"></div>`;
+                    letterColor = "text-rose-700 font-extrabold";
+                  }
+                }
+
+                return `
+                  <button 
+                    onclick="selectQuizOption(${q.id}, ${optIdx})" 
+                    ${isSubmitted ? 'disabled' : ''}
+                    class="${cardClass}">
+                    
+                    <!-- Radio circle on left -->
+                    <span class="w-5 h-5 rounded-full border-2 ${radioBorder} flex items-center justify-center flex-shrink-0">
+                      ${radioInner}
+                    </span>
+
+                    <!-- Letter chip (A), (B), (C), (D) -->
+                    <span class="${letterColor} font-bold text-sm tracking-wide">
+                      (${opt.label})
+                    </span>
+
+                    <!-- Option Text / Formula -->
+                    <span class="text-sm font-semibold text-slate-800">
+                      ${opt.text}
+                    </span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            ${isSubmitted ? `
+              <div class="mt-4 pt-4 border-t border-slate-100 bg-blue-50/50 p-4 rounded-2xl border border-blue-100 text-xs sm:text-sm text-slate-700 font-mono">
+                <strong class="font-sans text-blue-900 font-bold">Model Explanation:</strong> ${q.explanation}
+              </div>
+            ` : ''}
+
           </div>
         `;
-        container.appendChild(qCard);
-      });
+      }).join('');
+
+      const answered = Object.keys(currentAnswers).length;
+      const countEl = document.getElementById('quizProgressCount');
+      if (countEl) countEl.innerText = `${answered} / 10 Answered`;
+
+      updateQuizBannerUI();
 
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise();
       }
     }
 
-    function selectQuizOption(qId, key) {
-      quizUserAnswers[qId] = key;
-      const model = quizModels[currentModelIdx];
-      const q = model.questions.find(item => item.id === qId);
-      if (!q) return;
+    function switchQuizVersion(versionNum) {
+      activeQuizVersion = versionNum;
+      playTone(450, 'sine', 0.08);
 
-      q.options.forEach(opt => {
-        const btn = document.getElementById(`quiz-opt-${qId}-${opt.k}`);
-        const icon = document.getElementById(`quiz-icon-${qId}-${opt.k}`);
-        if (opt.k === key) {
-          btn.classList.add('border-[#1D63ED]', 'bg-blue-50/70', 'ring-2', 'ring-blue-500/20');
-          icon.className = "ph-bold ph-check-circle text-[#1D63ED] text-xl";
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`verBtn${i}`);
+        if (!btn) continue;
+        if (i === versionNum) {
+          btn.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-slate-900 shadow-sm font-bold";
         } else {
-          btn.classList.remove('border-[#1D63ED]', 'bg-blue-50/70', 'ring-2', 'ring-blue-500/20');
-          icon.className = "ph-bold ph-circle text-slate-300 text-lg";
+          btn.className = "px-3.5 py-1.5 rounded-lg transition-all text-blue-200 hover:text-white";
+        }
+      }
+
+      renderQuizQuestions();
+    }
+
+    function selectQuizOption(questionId, optionIdx) {
+      if (quizSubmittedByVersion[activeQuizVersion]) return;
+      playTone(520, 'sine', 0.08);
+      userQuizAnswersByVersion[activeQuizVersion][questionId] = optionIdx;
+      renderQuizQuestions();
+    }
+
+    function startOrSubmitQuiz() {
+      if (quizSubmittedByVersion[activeQuizVersion]) {
+        const banner = document.getElementById('quizResultBanner');
+        if (banner) window.scrollTo({ top: banner.offsetTop - 100, behavior: 'smooth' });
+        return;
+      }
+
+      if (!quizStartedByVersion[activeQuizVersion]) {
+        quizStartedByVersion[activeQuizVersion] = true;
+        quizTimerSeconds = 15 * 60;
+        playTone(600, 'sine', 0.15);
+        startQuizTimer();
+        renderQuizQuestions();
+        return;
+      }
+
+      submitQuiz();
+    }
+
+    function submitQuiz() {
+      if (quizSubmittedByVersion[activeQuizVersion]) return;
+      quizSubmittedByVersion[activeQuizVersion] = true;
+      clearInterval(timerInterval);
+      playTone(750, 'triangle', 0.25);
+
+      renderQuizQuestions();
+      updateQuizBannerUI(true);
+    }
+
+    function updateQuizBannerUI(scrollToBanner = false) {
+      const banner = document.getElementById('quizResultBanner');
+      if (!banner) return;
+
+      const isSubmitted = quizSubmittedByVersion[activeQuizVersion];
+      if (!isSubmitted) {
+        banner.classList.add('hidden');
+        return;
+      }
+
+      const currentVerData = quizVersionsData[activeQuizVersion];
+      const currentAnswers = userQuizAnswersByVersion[activeQuizVersion];
+
+      let score = 0;
+      currentVerData.questions.forEach(q => {
+        const userChoice = currentAnswers[q.id];
+        if (userChoice !== undefined && q.options[userChoice].correct) {
+          score++;
         }
       });
+
+      banner.classList.remove('hidden');
+      
+      let tierText = "Review Recommended";
+      let tierColor = "text-rose-600 bg-rose-50 border-rose-200";
+      if (score >= 9) {
+        tierText = "Outstanding! Master Level";
+        tierColor = "text-emerald-700 bg-emerald-50 border-emerald-200";
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+      } else if (score >= 7) {
+        tierText = "Great Job! Well Prepared";
+        tierColor = "text-blue-700 bg-blue-50 border-blue-200";
+      }
+
+      const nextVersionNum = (activeQuizVersion % 3) + 1;
+
+      banner.innerHTML = `
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div class="space-y-1 text-center lg:text-left">
+            <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold border ${tierColor} mb-1">
+              ${tierText} &bull; ${currentVerData.title}
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-outfit font-extrabold text-slate-900">
+              Exam Result: <span class="text-blue-600">${score}</span> / 10 Marks
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-500">
+              You completed Quiz #${activeQuizVersion} of 3. Review the model explanations below or proceed to the next attempt.
+            </p>
+          </div>
+
+          <!-- Post-Quiz Action Options: Retake or Start Next Quiz -->
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button onclick="retakeCurrentQuiz()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-extrabold border border-slate-300 shadow-sm transition-all flex items-center gap-2 active:scale-95">
+              <svg class="w-4 h-4 fill-current text-slate-600" viewBox="0 0 24 24">
+                <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              <span>Retake This Quiz</span>
+            </button>
+
+            <button onclick="startNextQuiz()" class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold shadow-clay-btn transition-all flex items-center gap-2 active:scale-95">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+              </svg>
+              <span>Start Next Quiz (Quiz #${nextVersionNum})</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      if (scrollToBanner) {
+        window.scrollTo({ top: banner.offsetTop - 100, behavior: 'smooth' });
+      }
+    }
+
+    // Retake the current quiz version with fresh timer & answers
+    function retakeCurrentQuiz() {
+      playTone(450, 'sine', 0.1);
+      quizSubmittedByVersion[activeQuizVersion] = false;
+      quizStartedByVersion[activeQuizVersion] = true;
+      userQuizAnswersByVersion[activeQuizVersion] = {};
+      
+      const banner = document.getElementById('quizResultBanner');
+      if (banner) banner.classList.add('hidden');
+
+      quizTimerSeconds = 15 * 60;
+      startQuizTimer();
+      renderQuizQuestions();
+      window.scrollTo({ top: document.getElementById('tabContent3').offsetTop - 30, behavior: 'smooth' });
+    }
+
+    // Advance to the next quiz version (1 -> 2 -> 3 -> 1)
+    function startNextQuiz() {
+      playTone(600, 'sine', 0.12);
+      activeQuizVersion = (activeQuizVersion % 3) + 1;
+      
+      quizSubmittedByVersion[activeQuizVersion] = false;
+      quizStartedByVersion[activeQuizVersion] = true;
+      userQuizAnswersByVersion[activeQuizVersion] = {};
+
+      const banner = document.getElementById('quizResultBanner');
+      if (banner) banner.classList.add('hidden');
+
+      quizTimerSeconds = 15 * 60;
+      startQuizTimer();
+      renderQuizQuestions();
+      window.scrollTo({ top: document.getElementById('tabContent3').offsetTop - 30, behavior: 'smooth' });
+    }
+
+    function restartQuiz() {
+      retakeCurrentQuiz();
     }
 
     function startQuizTimer() {
-      if (quizTimerInterval) clearInterval(quizTimerInterval);
-      quizSecondsRemaining = 15 * 60;
+      clearInterval(timerInterval);
+      updateTimerDisplay();
 
-      quizTimerInterval = setInterval(() => {
-        quizSecondsRemaining--;
-        const mins = Math.floor(quizSecondsRemaining / 60);
-        const secs = quizSecondsRemaining % 60;
-        const display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        
-        const timerEl = document.getElementById('quiz-timer');
-        if (timerEl) timerEl.innerText = display;
-
-        if (quizSecondsRemaining <= 0) {
-          clearInterval(quizTimerInterval);
+      timerInterval = setInterval(() => {
+        quizTimerSeconds--;
+        if (quizTimerSeconds <= 0) {
+          clearInterval(timerInterval);
+          quizTimerSeconds = 0;
+          updateTimerDisplay();
           submitQuiz();
+        } else {
+          updateTimerDisplay();
         }
       }, 1000);
     }
 
-    function rotateQuizBank() {
-      const nextIdx = (currentModelIdx + 1) % quizModels.length;
-      switchQuizModel(nextIdx);
+    function updateTimerDisplay() {
+      const minutes = Math.floor(quizTimerSeconds / 60);
+      const seconds = quizTimerSeconds % 60;
+      const el = document.getElementById('quizTimerText');
+      if (el) {
+        el.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
     }
 
-    function submitQuiz() {
-      if (quizTimerInterval) clearInterval(quizTimerInterval);
+    // =========================================================================
+    // THREE.JS 3D FLOATING BACKGROUND
+    // =========================================================================
+    function initThreeBackground() {
+      const canvas = document.getElementById('threeCanvasBg');
+      if (!canvas) return;
 
-      const model = quizModels[currentModelIdx];
-      let score = 0;
-      const breakdownEl = document.getElementById('report-breakdown');
-      breakdownEl.innerHTML = '';
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 24;
 
-      model.questions.forEach((q, idx) => {
-        const userChoice = quizUserAnswers[q.id] || "None";
-        const isCorrect = userChoice === q.correct;
-        if (isCorrect) score++;
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        const item = document.createElement('div');
-        item.className = `p-4 rounded-2xl border ${isCorrect ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50/50 border-rose-200'} space-y-1 text-xs sm:text-sm`;
-        item.innerHTML = `
-          <div class="flex items-center justify-between font-bold">
-            <span class="flex items-center gap-1.5 ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}">
-              <i class="ph-bold ${isCorrect ? 'ph-check-circle' : 'ph-x-circle'} text-base"></i>
-              Question ${idx + 1} (${q.level}): ${isCorrect ? 'Correct (+1 Mark)' : 'Incorrect (0 Marks)'}
-            </span>
-            <span class="font-mono text-slate-500">Correct: (${q.correct}) | Selected: (${userChoice})</span>
-          </div>
-          <p class="text-slate-700 font-medium">${q.text}</p>
-          <p class="text-slate-600 font-mono text-xs pt-1">${q.exp}</p>
-        `;
-        breakdownEl.appendChild(item);
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0x3b82f6, 0.7);
+      dirLight.position.set(10, 20, 15);
+      scene.add(dirLight);
+
+      // Floating Shapes
+      const shapes = [];
+      const geometries = [
+        new THREE.IcosahedronGeometry(2.2, 0),
+        new THREE.TorusGeometry(2.0, 0.6, 16, 40),
+        new THREE.OctahedronGeometry(2.0, 0),
+        new THREE.TetrahedronGeometry(2.4, 0)
+      ];
+
+      const colors = [0x93c5fd, 0xc4b5fd, 0xa7f3d0, 0xfde68a];
+
+      for (let i = 0; i < 9; i++) {
+        const geom = geometries[i % geometries.length];
+        const mat = new THREE.MeshPhongMaterial({
+          color: colors[i % colors.length],
+          shininess: 40,
+          flatShading: true,
+          transparent: true,
+          opacity: 0.35
+        });
+        const mesh = new THREE.Mesh(geom, mat);
+        mesh.position.set(
+          (Math.random() - 0.5) * 35,
+          (Math.random() - 0.5) * 22,
+          (Math.random() - 0.5) * 12
+        );
+        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+        mesh.userData = {
+          rotSpeedX: (Math.random() - 0.5) * 0.008,
+          rotSpeedY: (Math.random() - 0.5) * 0.008,
+          floatSpeed: 0.001 + Math.random() * 0.002,
+          initialY: mesh.position.y
+        };
+        scene.add(mesh);
+        shapes.push(mesh);
+      }
+
+      let mouseX = 0;
+      let mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
       });
 
-      const reportCard = document.getElementById('quiz-report-card');
-      const scoreDisplay = document.getElementById('report-score-display');
-      const percentDisplay = document.getElementById('report-percent-display');
-      const tierBadge = document.getElementById('report-badge-tier');
-
-      scoreDisplay.innerText = `${score} / 10`;
-      const pct = (score / 10) * 100;
-      percentDisplay.innerText = `${pct}% Accuracy`;
-
-      if (score >= 9) {
-        tierBadge.className = "px-4 py-2 rounded-2xl bg-emerald-100 text-emerald-800 font-display font-bold text-sm";
-        tierBadge.innerText = "Outstanding • Full Mastery";
-        if (window.confetti) {
-          window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-        }
-      } else if (score >= 7) {
-        tierBadge.className = "px-4 py-2 rounded-2xl bg-blue-100 text-blue-800 font-display font-bold text-sm";
-        tierBadge.innerText = "Great Job • Proficient";
-      } else {
-        tierBadge.className = "px-4 py-2 rounded-2xl bg-amber-100 text-amber-800 font-display font-bold text-sm";
-        tierBadge.innerText = "Review Recommended";
+      function animate(time) {
+        requestAnimationFrame(animate);
+        shapes.forEach(shape => {
+          shape.rotation.x += shape.userData.rotSpeedX;
+          shape.rotation.y += shape.userData.rotSpeedY;
+          shape.position.y = shape.userData.initialY + Math.sin(time * shape.userData.floatSpeed) * 1.5;
+        });
+        camera.position.x += (mouseX * 2.5 - camera.position.x) * 0.03;
+        camera.position.y += (mouseY * 2.5 - camera.position.y) * 0.03;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
       }
+      requestAnimationFrame(animate);
 
-      reportCard.classList.remove('hidden');
-      reportCard.scrollIntoView({ behavior: 'smooth' });
-
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise();
-      }
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
     }
-
-    function retakeQuiz() {
-      rotateQuizBank();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      initThreeJSBackground();
-      renderRevisionBank();
-      renderCurrentQuiz();
-      startQuizTimer();
-    });
   </script>
-
 </body>
 </html>
